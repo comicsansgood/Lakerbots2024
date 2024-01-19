@@ -15,8 +15,8 @@
     "canbus": "canivore"
   },
   "conversionFactor": {
-    "angle": 15,
-    "drive": 3
+    "angle": 0.000217,
+    "drive": 3.263
   },
   "encoder": {
     "type": "cancoder",
@@ -24,7 +24,7 @@
     "canbus": "canivore"
   },
   "inverted": {
-    "drive": false,
+    "drive": true,
     "angle": true
   }
 }
