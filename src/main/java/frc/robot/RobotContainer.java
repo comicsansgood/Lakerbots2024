@@ -5,9 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -17,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
+import frc.robot.commands.swervedrive.drivebase.DriveToTarget;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -46,6 +51,8 @@ public class RobotContainer
   public RobotContainer()
   {
     // Configure the trigger bindings
+  SmartDashboard.putData("drive to 0,0,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
+  SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
     configureBindings();
 
     AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(drivebase,
