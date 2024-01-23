@@ -9,6 +9,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -21,6 +23,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
@@ -34,20 +37,18 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase
 {
 
-  /**
-   * Swerve drive object.
-   */
+ 
   private final SwerveDrive swerveDrive;
-  /**
-   * Maximum speed of the robot in meters per second, used to limit acceleration.
-   */
-  public        double      maximumSpeed = Units.feetToMeters(14.5);
+  
+  public double maximumSpeed = Units.feetToMeters(14.5);
+  
+  //pid controllers for odometry
+  public PIDController XPid = new PIDController(1, 0, 0); //TODO : Tune this PID loop
+  public PIDController YPid = new PIDController(1, 0, 0); //TODO : Tune this PID loop
+  public PIDController ThetaPid = new PIDController(1, 0, 0); //TODO : Tune this PID loop
 
-  /**
-   * Initialize {@link SwerveDrive} with the directory provided.
-   *
-   * @param directory Directory of swerve drive config files.
-   */
+
+ 
   public SwerveSubsystem(File directory)
   {
     // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
@@ -79,6 +80,38 @@ public class SwerveSubsystem extends SubsystemBase
 
     setupPathPlanner();
   }
+
+  //sets the target pose for the odometry to travel to
+  public void setOdometryTarget(Pose2d targetPose){
+    XPid.setSetpoint(targetPose.getX());
+    YPid.setSetpoint(targetPose.getY());
+    ThetaPid.setSetpoint(targetPose.getRotation().getDegrees());
+  }
+
+  //sets the allowed positional and rotational error of the 3 PID loops
+  public void setOdometryAllowedError(double positionalTolerance, double rotationalTolerance){
+    XPid.setTolerance(positionalTolerance);
+    YPid.setTolerance(positionalTolerance);
+    ThetaPid.setTolerance(rotationalTolerance);
+  }
+  
+
+  //calculates the speeds to drive at to arrive at the reference position
+  public double[] getOdometrySpeeds(Pose2d currentPose){
+    //creates double array of speeds and assigns it the calculated speeds to travel at
+    double[] Speeds = {
+      XPid.calculate(currentPose.getX()), 
+      YPid.calculate(currentPose.getY()), 
+      ThetaPid.calculate(currentPose.getRotation().getDegrees())};
+
+    return Speeds;
+  }
+
+  //returns a boolean representing if the odometry has reached its reference pose
+  public boolean isOdometryAtTargetPosition(){
+    return XPid.atSetpoint() && YPid.atSetpoint() && ThetaPid.atSetpoint();
+  }
+
 
   /**
    * Setup AutoBuilder for PathPlanner.
