@@ -14,18 +14,28 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.FeederCommands.FeederGo;
+import frc.robot.commands.FeederCommands.FeederStop;
+import frc.robot.commands.LauncherCommands.LauncherGo;
+import frc.robot.commands.LauncherCommands.LauncherStop;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.DriveToTarget;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
+import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -38,12 +48,15 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/falcon"));
-  // CommandJoystick rotationController = new CommandJoystick(1);
+  
+  private final LauncherSubsystem m_launcher = new LauncherSubsystem();
+  private final FeederSubsystem m_feeder = new FeederSubsystem();                                                                      // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandJoystick driverController = new CommandJoystick(1);
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   XboxController driverXbox = new XboxController(0);
+  XboxController tempController = new XboxController(1);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -52,7 +65,7 @@ public class RobotContainer
   {
     // Configure the trigger bindings
   SmartDashboard.putData("drive to 0,0,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
-  SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
+  SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(1,1), new Rotation2d(0)), 0.5, 1));
     configureBindings();
 
     AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(drivebase,
@@ -81,10 +94,10 @@ public class RobotContainer
                                                                                                   OperatorConstants.LEFT_X_DEADBAND),
                                                                       () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                                                                                                   OperatorConstants.RIGHT_X_DEADBAND), 
-                                                                      driverXbox::getYButtonPressed, 
-                                                                      driverXbox::getAButtonPressed, 
-                                                                      driverXbox::getXButtonPressed, 
-                                                                      driverXbox::getBButtonPressed);
+                                                                      tempController::getYButtonPressed, 
+                                                                      tempController::getAButtonPressed, 
+                                                                      tempController::getXButtonPressed, 
+                                                                      tempController::getBButtonPressed);
 
     TeleopDrive simClosedFieldRel = new TeleopDrive(drivebase,
                                                     () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -99,7 +112,7 @@ public class RobotContainer
         () -> -driverController.getRawAxis(2), () -> true);
 
     //drivebase.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
-    drivebase.setDefaultCommand(closedAbsoluteDriveAdv);
+    //drivebase.setDefaultCommand(closedAbsoluteDriveAdv);
   }
 
   /**
@@ -113,8 +126,14 @@ public class RobotContainer
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
-    new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    //new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
+    //new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new LauncherGo(m_launcher));
+    new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new LauncherStop(m_launcher));
+    new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new FeederGo(m_feeder, .2));
+    new JoystickButton(driverXbox, XboxController.Button.kLeftBumper.value).onTrue(new FeederGo(m_feeder, -.1));
+    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new FeederStop(m_feeder));
+
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
 
@@ -126,7 +145,10 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Path", true);
+    //return drivebase.getAutonomousCommand("backandforth", true);
+    // return drivebase.getAutoNew("backandforth");
+    return drivebase.getAutonomousCommand("crazy", true);
+    
   }
 
   public void setDriveMode()

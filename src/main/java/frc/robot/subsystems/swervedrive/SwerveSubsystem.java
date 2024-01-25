@@ -5,6 +5,7 @@
 package frc.robot.subsystems.swervedrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -13,6 +14,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -20,6 +22,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.File;
@@ -43,9 +46,9 @@ public class SwerveSubsystem extends SubsystemBase
   public double maximumSpeed = Units.feetToMeters(14.5);
   
   //pid controllers for odometry
-  public PIDController XPid = new PIDController(1, 0, 0); //TODO : Tune this PID loop
-  public PIDController YPid = new PIDController(1, 0, 0); //TODO : Tune this PID loop
-  public PIDController ThetaPid = new PIDController(1, 0, 0); //TODO : Tune this PID loop
+  public PIDController XPid = new PIDController(3, 0, 0); //TODO : Tune this PID loop
+  public PIDController YPid = new PIDController(3, 0, 0); //TODO : Tune this PID loop
+  public PIDController ThetaPid = new PIDController(0.08, 0, 0); //TODO : Tune this PID loop
 
 
  
@@ -162,11 +165,21 @@ public class SwerveSubsystem extends SubsystemBase
 
     if (setOdomToStart)
     {
-      resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
+            //resetOdometry(new Pose2d(path.getPoint(0).position, new Rotation2d(0)));
+        resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
+        //swerveDrive.setGyro(new Rotation3d(0,0,180));
+        //resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
     }
 
     // Create a path following command using AutoBuilder. This will also trigger event markers.
     return AutoBuilder.followPath(path);
+    
+  }
+
+  public Command getAutoNew(String autoName){
+    //resetOdometry(new Pose2d(PathPlannerAuto.getStaringPoseFromAutoFile(autoName).getTranslation(), getHeading()));
+    resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile(autoName));
+    return AutoBuilder.buildAuto(autoName);
   }
 
   /**
@@ -269,6 +282,9 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
+    SmartDashboard.putNumber("odom x", getPose().getX());
+    SmartDashboard.putNumber("odom y", getPose().getY());
+    SmartDashboard.putNumber("odom theta", getPose().getRotation().getDegrees());
   }
 
   @Override
@@ -335,6 +351,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     swerveDrive.zeroGyro();
   }
+
 
   /**
    * Sets the drive motors to brake/coast mode.

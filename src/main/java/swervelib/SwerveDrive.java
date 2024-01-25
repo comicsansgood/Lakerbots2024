@@ -102,7 +102,7 @@ public class SwerveDrive
   /**
    * Invert odometry readings of drive motor positions, used as a patch for debugging currently.
    */
-  public        boolean                  invertOdometry                                  = false;
+  public        boolean                  invertOdometry                                  = false; //USED TO BE FALSE
   /**
    * Correct chassis velocity in {@link SwerveDrive#drive(Translation2d, double, boolean, boolean)} using 254's
    * correction.

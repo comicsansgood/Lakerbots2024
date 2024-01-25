@@ -36,6 +36,7 @@ public class DriveToTarget extends Command
   {
     m_drivetrain.setOdometryAllowedError(allowedPositionalTolerance, allowedRotationalTolerance);
     currentPose = m_drivetrain.getPose();
+    m_drivetrain.setOdometryTarget(targetPose);
   }
 
   @Override
@@ -43,8 +44,12 @@ public class DriveToTarget extends Command
   {
     currentPose = m_drivetrain.getPose();
     calculatedSpeeds = m_drivetrain.getOdometrySpeeds(currentPose);
+
+    SmartDashboard.putNumber("odomXspeed", calculatedSpeeds[0]);
+    SmartDashboard.putNumber("odomYspeed", calculatedSpeeds[1]);
+    SmartDashboard.putString("targetpose", targetPose.toString());
     
-    m_drivetrain.drive(new ChassisSpeeds(
+    m_drivetrain.driveFieldOriented(new ChassisSpeeds(
       calculatedSpeeds[0], 
       calculatedSpeeds[1], 
       calculatedSpeeds[2]
@@ -55,7 +60,15 @@ public class DriveToTarget extends Command
   @Override
   public boolean isFinished()
   {
+    /*if(m_drivetrain.XPid.getSetpoint() == targetPose.getX() &&
+    m_drivetrain.YPid.getSetpoint() == targetPose.getY()){
     return m_drivetrain.isOdometryAtTargetPosition();
+    }
+    else{
+      return false;
+    }
+    */
+    return false;
   }
 
   @Override
