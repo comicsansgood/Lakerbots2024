@@ -24,18 +24,21 @@ import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
 import frc.robot.commands.LauncherCommands.LauncherGo;
 import frc.robot.commands.LauncherCommands.LauncherStop;
+import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.TrampulatorManipulatorSpin;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.DriveToTarget;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.TrampulatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -48,7 +51,7 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/falcon"));
-  
+  private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   private final LauncherSubsystem m_launcher = new LauncherSubsystem();
   private final FeederSubsystem m_feeder = new FeederSubsystem();                                                                      // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -66,6 +69,11 @@ public class RobotContainer
     // Configure the trigger bindings
   SmartDashboard.putData("drive to 0,0,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
   SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(1,1), new Rotation2d(0)), 0.5, 1));
+  SmartDashboard.putData("trampspin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
+  SmartDashboard.putData("trampstop", new TrampulatorManipulatorSpin(m_trampulator, 0));
+  SmartDashboard.putData("trampreverse", new TrampulatorManipulatorSpin(m_trampulator, -0.25));
+
+
     configureBindings();
 
     AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(drivebase,
@@ -112,7 +120,12 @@ public class RobotContainer
         () -> -driverController.getRawAxis(2), () -> true);
 
     //drivebase.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
-    //drivebase.setDefaultCommand(closedAbsoluteDriveAdv);
+    drivebase.setDefaultCommand(closedAbsoluteDriveAdv);
+
+
+    NamedCommands.registerCommand("trampSpin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
+    NamedCommands.registerCommand("trampStop", new TrampulatorManipulatorSpin(m_trampulator, 0));
+
   }
 
   /**
@@ -146,8 +159,8 @@ public class RobotContainer
   {
     // An example command will be run in autonomous
     //return drivebase.getAutonomousCommand("backandforth", true);
-    // return drivebase.getAutoNew("backandforth");
-    return drivebase.getAutonomousCommand("crazy", true);
+     //return drivebase.getAutoNew("tramp_auto_test");
+    return drivebase.getAutonomousCommand("tramp_test_2", true);
     
   }
 
