@@ -1,14 +1,12 @@
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.ser.std.CalendarSerializer;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase{
 
@@ -16,8 +14,9 @@ public class IntakeSubsystem extends SubsystemBase{
     public CANSparkFlex intakeSpinMotor;
     public SparkPIDController intakeWristPidController;
 
-    public final double OutPosition = 1000;
-    public final double InPosition = 0;
+    public double tolerence;
+    public double target;
+
 
     public IntakeSubsystem(){
 
@@ -27,6 +26,8 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeWristPidController = intakeWristMotor.getPIDController();
         intakeWristPidController.setP(1);
         intakeWristPidController.setSmartMotionAllowedClosedLoopError(0.2, 0);
+
+        tolerence = Constants.IntakeConstants.intakeTolerence;
     }
 
     public void intakeSpin(double x){
@@ -38,12 +39,22 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public void intakeOut(){
-        intakeWristPidController.setReference(OutPosition, ControlType.kSmartMotion);
+        target = Constants.IntakeConstants.intakeOut;
+        intakeWristPidController.setReference(target, ControlType.kSmartMotion);
     }
-      public void intakeIn(){
-        intakeWristPidController.setReference(InPosition, ControlType.kSmartMotion);
+    
+    public void intakeIn(){
+        target = Constants.IntakeConstants.intakeIn;
+        intakeWristPidController.setReference(target, ControlType.kSmartMotion);
     }
 
+    public double intakeWristGetPosition(){
+        return intakeWristMotor.getEncoder().getPosition();
+    }
+    
+    public boolean intakeAtTargetPosition(){
+        return Math.abs(target - intakeWristGetPosition()) < tolerence;
+    }
 
 
     @Override

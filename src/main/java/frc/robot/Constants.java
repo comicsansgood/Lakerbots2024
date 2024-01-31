@@ -49,4 +49,27 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1; //used to be .01
     public static final double TURN_CONSTANT = 6;
   }
+
+  public static class LauncherConstants{
+    public static final double launcherHome = 0;
+    public static final double launcherMax = 10000;//TODO: still programmer math
+    public static final double launcherTolerence = 0.1; //TODO: programmer math
+  }
+
+  public static class IntakeConstants{
+    public static final double intakeIn = 0;
+    public static final double intakeOut = 100000; //TODO: still programmer math
+    public static final double intakeTolerence = 0.1; //TODO : programmer math
+  } 
+  
+  public static class ClimberConstants{
+    public static final double climberHome = 0;
+    public static final double climberLimit = 10000; //TODO: still programmer math
+    public static final double climberTolerence = 0.1;//TODO: programmer math
+  }
+  public static class TrampulatorConstants{
+    public static final double trampulatorWristMin = 0;
+    public static final double trampulatorWristMax = 10000;//TODO: still programmer math
+    public static final double trampulatorTolerance = 0.1;//TODO: still programmer math
+  }
 }

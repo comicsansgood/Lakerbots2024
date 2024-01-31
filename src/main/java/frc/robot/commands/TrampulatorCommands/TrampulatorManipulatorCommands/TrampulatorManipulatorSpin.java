@@ -1,6 +1,5 @@
 package frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands;
 
-import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.TrampulatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 

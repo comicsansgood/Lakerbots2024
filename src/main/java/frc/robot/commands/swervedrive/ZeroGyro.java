@@ -2,31 +2,33 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.LauncherCommands;
+package frc.robot.commands.swervedrive;
 
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import swervelib.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class LauncherGo extends Command {
+public class ZeroGyro extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final LauncherSubsystem m_launcer;
+  private final SwerveSubsystem m_drivetrain;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public LauncherGo(LauncherSubsystem launcher) {
-    m_launcer = launcher;
+  public ZeroGyro(SwerveSubsystem drivetrain) {
+    m_drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_launcer);
+    addRequirements(m_drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_launcer.launcherGo();
+    m_drivetrain.zeroGyro();
 
   }
 
