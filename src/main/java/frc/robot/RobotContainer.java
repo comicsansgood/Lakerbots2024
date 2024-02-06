@@ -141,7 +141,7 @@ public class RobotContainer
     //We use this one
     //drivebase.setDefaultCommand(closedAbsoluteDriveAdv);
 
-    m_trampulator.setDefaultCommand(new TrampulatorManipulatorOrient(m_trampulator, driverController.getRawAxis(1), 0.25, driverXbox));
+    m_trampulator.setDefaultCommand(new TrampulatorManipulatorOrient(m_trampulator, driverXbox));
 
     //NamedCommands.registerCommand("trampSpin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
     //NamedCommands.registerCommand("trampStop", new TrampulatorManipulatorSpin(m_trampulator, 0));
