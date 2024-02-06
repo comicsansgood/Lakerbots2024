@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,8 +21,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
+import frc.robot.commands.IntakeCommands.IntakeHome;
+import frc.robot.commands.IntakeCommands.IntakeIn;
+import frc.robot.commands.IntakeCommands.IntakeOut;
+import frc.robot.commands.IntakeCommands.IntakeSpin;
 import frc.robot.commands.LauncherCommands.LauncherGo;
 import frc.robot.commands.LauncherCommands.LauncherStop;
+import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.TrampulatorManipulatorOrient;
 import frc.robot.commands.swervedrive.ZeroGyro;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
@@ -29,6 +35,7 @@ import frc.robot.commands.swervedrive.drivebase.DriveToTarget;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.TrampulatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import frc.robot.subsystems.FeederSubsystem;
@@ -37,6 +44,7 @@ import frc.robot.subsystems.FeederSubsystem;
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
  * Instead, the structure of the robot (including subsystems, commands, and trigger mappings) should be declared here.
  */
+import frc.robot.subsystems.IntakeSubsystem;
 public class RobotContainer
 {
 
@@ -44,8 +52,11 @@ public class RobotContainer
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/falcon"));
   //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
-  private final LauncherSubsystem m_launcher = new LauncherSubsystem();
-  private final FeederSubsystem m_feeder = new FeederSubsystem();                                                                      // CommandJoystick rotationController = new CommandJoystick(1);
+  //private final LauncherSubsystem m_launcher = new LauncherSubsystem();
+  //private final FeederSubsystem m_feeder = new FeederSubsystem();  
+  private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandJoystick driverController = new CommandJoystick(1);
 
@@ -69,6 +80,12 @@ public class RobotContainer
     // Configure the trigger bindings
   SmartDashboard.putData("drive to 0,0,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
   SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(drivebase, new Pose2d(new Translation2d(1,1), new Rotation2d(0)), 0.5, 1));
+  SmartDashboard.putData("intake spin", new IntakeSpin(m_intake, 0.6));
+    SmartDashboard.putData("intake stop", new IntakeSpin(m_intake, 0));
+  SmartDashboard.putData("intake out", new IntakeOut(m_intake));
+  SmartDashboard.putData("intake home", new IntakeHome(m_intake));
+
+
   //SmartDashboard.putData("trampspin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
   //SmartDashboard.putData("trampstop", new TrampulatorManipulatorSpin(m_trampulator, 0));
   //SmartDashboard.putData("trampreverse", new TrampulatorManipulatorSpin(m_trampulator, -0.25));
@@ -120,11 +137,16 @@ public class RobotContainer
         () -> -driverController.getRawAxis(2), () -> true);
 
     //drivebase.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
-    drivebase.setDefaultCommand(closedAbsoluteDriveAdv);
 
+    //We use this one
+    //drivebase.setDefaultCommand(closedAbsoluteDriveAdv);
+
+    m_trampulator.setDefaultCommand(new TrampulatorManipulatorOrient(m_trampulator, driverController.getRawAxis(1), 0.25, driverXbox));
 
     //NamedCommands.registerCommand("trampSpin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
     //NamedCommands.registerCommand("trampStop", new TrampulatorManipulatorSpin(m_trampulator, 0));
+
+    
 
   }
 
@@ -141,12 +163,24 @@ public class RobotContainer
 
     //new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
     //new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new LauncherGo(m_launcher));
+    
+    
+    
+    /*new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new LauncherGo(m_launcher));
     new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new LauncherStop(m_launcher));
     new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new FeederGo(m_feeder, .2));
     new JoystickButton(driverXbox, XboxController.Button.kLeftBumper.value).onTrue(new FeederGo(m_feeder, -.1));
     new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new FeederStop(m_feeder));
     new JoystickButton(driverXbox, XboxController.Button.kStart.value).onTrue(new ZeroGyro(drivebase));
+*/
+
+
+
+    new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSpin(m_intake, 0.1));
+    new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSpin(m_intake, 0));
+    new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new IntakeIn(m_intake));
+    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new IntakeOut(m_intake));
+    
 
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }

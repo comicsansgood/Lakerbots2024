@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An example command that uses an example subsystem. */
 public class LauncherGo extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final LauncherSubsystem m_launcer;
+  private final LauncherSubsystem m_launcher;
 
   /**
    * Creates a new ExampleCommand.
@@ -18,15 +18,15 @@ public class LauncherGo extends Command {
    * @param subsystem The subsystem used by this command.
    */
   public LauncherGo(LauncherSubsystem launcher) {
-    m_launcer = launcher;
+    m_launcher = launcher;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_launcer);
+    addRequirements(m_launcher);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_launcer.launcherGo();
+    m_launcher.launcherGo();
 
   }
 

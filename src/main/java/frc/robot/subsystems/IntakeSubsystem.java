@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -10,7 +11,7 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase{
 
-    public CANSparkFlex intakeWristMotor;
+    public CANSparkMax intakeWristMotor;
     public CANSparkFlex intakeSpinMotor;
     public SparkPIDController intakeWristPidController;
 
@@ -20,11 +21,12 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public IntakeSubsystem(){
 
-        intakeWristMotor = new CANSparkFlex(0, MotorType.kBrushless);//TODO: can id
-        intakeSpinMotor = new CANSparkFlex(0, MotorType.kBrushless);//TODO: can id
+        intakeWristMotor = new CANSparkMax(12, MotorType.kBrushless);
+        intakeSpinMotor = new CANSparkFlex(11, MotorType.kBrushless);
         
         intakeWristPidController = intakeWristMotor.getPIDController();
-        intakeWristPidController.setP(1);
+        intakeWristPidController.setP(0.0002500000118743628);
+        intakeWristPidController.setFF(0.00017499999376013875);
         intakeWristPidController.setSmartMotionAllowedClosedLoopError(0.2, 0);
 
         tolerence = Constants.IntakeConstants.intakeTolerence;
@@ -45,6 +47,10 @@ public class IntakeSubsystem extends SubsystemBase{
     
     public void intakeIn(){
         target = Constants.IntakeConstants.intakeIn;
+        intakeWristPidController.setReference(target, ControlType.kSmartMotion);
+    }
+    public void intakeHome(){
+        target = Constants.IntakeConstants.intakeHome;
         intakeWristPidController.setReference(target, ControlType.kSmartMotion);
     }
 

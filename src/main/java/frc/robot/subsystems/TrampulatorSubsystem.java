@@ -13,19 +13,19 @@ public class TrampulatorSubsystem extends SubsystemBase{
     public CANSparkMax manipulatorTopMotor;
     public CANSparkMax manipulatorBottomMotor;
 
-    public CANSparkFlex trampulatorWristMotor; //TODO: make this neo 550
+    public CANSparkMax trampulatorWristMotor;
     public SparkPIDController trampulatorWristPidController;
 
     public double tolerence;
     public double target;
 
     public TrampulatorSubsystem(){ 
-        manipulatorTopMotor = new CANSparkMax(16, MotorType.kBrushless);//TODO: Can id
-        manipulatorBottomMotor = new CANSparkMax(17, MotorType.kBrushless);//TODO: Can id
+        manipulatorTopMotor = new CANSparkMax(18, MotorType.kBrushless);
+        manipulatorBottomMotor = new CANSparkMax(19, MotorType.kBrushless);
         manipulatorTopMotor.setInverted(true);
         manipulatorBottomMotor.setInverted(true);
         
-        trampulatorWristMotor = new CANSparkFlex(0, MotorType.kBrushless);//TODO: CAN ID
+        trampulatorWristMotor = new CANSparkMax(17, MotorType.kBrushless);
         trampulatorWristPidController = trampulatorWristMotor.getPIDController();
         trampulatorWristPidController.setP(0.1);//TODO: pid tuning
 
@@ -35,9 +35,11 @@ public class TrampulatorSubsystem extends SubsystemBase{
 
     }
 
-    public void trampulatorManipulatorSpin(double x){
-        manipulatorTopMotor.set(x);
-        manipulatorBottomMotor.set(x);
+    
+
+    public void trampulatorManipulatorSpin(double speed1, double speed2){
+        manipulatorTopMotor.set(speed1);
+        manipulatorBottomMotor.set(speed2);
     }
     public void trampulatorManipulatorStop(){
         manipulatorTopMotor.set(0);
@@ -48,9 +50,9 @@ public class TrampulatorSubsystem extends SubsystemBase{
         trampulatorWristPidController.setReference(Constants.TrampulatorConstants.trampulatorWristMin, ControlType.kSmartMotion);
     }
     
-    public void trampulatorWristSetTarget(double reference) throws Exception{
+    public void trampulatorWristSetTarget(double reference){
         if(!(reference < Constants.TrampulatorConstants.trampulatorWristMin && reference > Constants.TrampulatorConstants.trampulatorWristMax)){
-            throw new Exception("cannot set reference outside limits");
+            System.out.println("cannot set reference outside limits");
         }else{
             target = reference;
             trampulatorWristPidController.setReference(target, ControlType.kSmartMotion);

@@ -17,7 +17,7 @@ public class TrampulatorManipulatorSpin extends Command {
 
   @Override
   public void initialize() {
-    m_trampulator.trampulatorManipulatorSpin(speed);
+    m_trampulator.trampulatorManipulatorSpin(speed, speed);
 
   }
 

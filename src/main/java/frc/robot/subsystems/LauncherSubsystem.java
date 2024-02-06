@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -11,19 +12,20 @@ public class LauncherSubsystem extends SubsystemBase{
     
     public CANSparkFlex launcherLeftMotor;
     public CANSparkFlex launcherRightMotor;
-    public CANSparkFlex launcherPivotMotor;
+    public CANSparkMax launcherPivotMotor;
     public SparkPIDController launcherPivotPidController;
+
 
     public double tolerence;
     public double target;
 
     public LauncherSubsystem(){
-        launcherLeftMotor = new CANSparkFlex(13, MotorType.kBrushless);
-        launcherRightMotor = new CANSparkFlex(14, MotorType.kBrushless);
+        launcherLeftMotor = new CANSparkFlex(9, MotorType.kBrushless);
+        launcherRightMotor = new CANSparkFlex(10, MotorType.kBrushless);
         launcherLeftMotor.setInverted(false);
         launcherRightMotor.setInverted(true);
 
-        launcherPivotMotor = new CANSparkFlex(0, MotorType.kBrushless);//TODO CAN ID
+        launcherPivotMotor = new CANSparkMax(14, MotorType.kBrushless);
         launcherPivotPidController = launcherPivotMotor.getPIDController();
         launcherPivotPidController.setP(0.1);//TODO PID tuning
 
@@ -46,9 +48,9 @@ public class LauncherSubsystem extends SubsystemBase{
         launcherRightMotor.set(val2);
     }
 
-    public void launcherAim(double theta) throws Exception{
+    public void launcherAim(double theta){
         if(theta >= Constants.LauncherConstants.launcherMax){
-            throw new Exception("Cannot extend pass maximum");
+            System.out.println("ERROR: cannot extend pass max");
         }else{
             target = theta;
             launcherPivotPidController.setReference(target, ControlType.kSmartMotion);

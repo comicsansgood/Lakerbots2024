@@ -19,16 +19,16 @@ public class ClimberSubsystem extends SubsystemBase{
 
 
     public ClimberSubsystem(){
-        climberMotor = new CANSparkFlex(0, MotorType.kBrushless);//TODO Can id
+        climberMotor = new CANSparkFlex(15, MotorType.kBrushless);
         climberPidController = climberMotor.getPIDController();
         climberPidController.setP(0.1);//TODO tune PID
 
         tolerence = Constants.ClimberConstants.climberTolerence;
     }
 
-    public void ClimberSetTarget(double reference) throws Exception{
+    public void climberSetTarget(double reference){
         if(reference > Constants.ClimberConstants.climberLimit || reference < Constants.ClimberConstants.climberHome){
-            throw new Exception("cannot set reference outside climber limits");
+            System.out.println("cannot set reference outside climber limits");
         }
         else{
             target = reference;
@@ -36,12 +36,12 @@ public class ClimberSubsystem extends SubsystemBase{
         }
     }
 
-    public double ClimberGetPosition(){
+    public double climberGetPosition(){
         return climberMotor.getEncoder().getPosition();
     }
 
-    public boolean ClimberAtTargetPosition(){
-        return Math.abs(target - ClimberGetPosition()) < tolerence;
+    public boolean climberAtTargetPosition(){
+        return Math.abs(target - climberGetPosition()) < tolerence;
     }
 
 
@@ -49,4 +49,5 @@ public class ClimberSubsystem extends SubsystemBase{
     @Override
     public void periodic() {
     }
+
 }

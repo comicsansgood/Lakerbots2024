@@ -7,6 +7,7 @@ package frc.robot.subsystems.swervedrive;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -176,7 +177,9 @@ public class SwerveSubsystem extends SubsystemBase
 
   public Command getAutoNew(String autoName){
     //resetOdometry(new Pose2d(PathPlannerAuto.getStaringPoseFromAutoFile(autoName).getTranslation(), getHeading()));
-    resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile(autoName));
+    
+          resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile(autoName));
+    
     return AutoBuilder.buildAuto(autoName);
   }
 

@@ -57,8 +57,9 @@ public final class Constants
   }
 
   public static class IntakeConstants{
-    public static final double intakeIn = 0;
-    public static final double intakeOut = 100000; //TODO: still programmer math
+    public static final double intakeHome = 0;
+    public static final double intakeIn = 0; //TODO:programmer math
+    public static final double intakeOut = 2; //TODO: still programmer math
     public static final double intakeTolerence = 0.1; //TODO : programmer math
   } 
   
@@ -72,4 +73,11 @@ public final class Constants
     public static final double trampulatorWristMax = 10000;//TODO: still programmer math
     public static final double trampulatorTolerance = 0.1;//TODO: still programmer math
   }
+
+  public static class ElevatorConstants{
+    public static final double elevatorMax = 10000;//TODO: still programmer math
+    public static final double elevatorHome = 0; //TODO:still programmer math\
+    public static final double elevatorTolerence = 0.1;//TODO: programmer math
+  }
 }
+
