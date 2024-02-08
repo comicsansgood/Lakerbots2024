@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -14,6 +14,7 @@ public class IntakeSubsystem extends SubsystemBase{
     public CANSparkMax intakeWristMotor;
     public CANSparkFlex intakeSpinMotor;
     public SparkPIDController intakeWristPidController;
+    private DigitalInput digitalSensor;
 
     public double tolerence;
     public double target;
@@ -23,11 +24,14 @@ public class IntakeSubsystem extends SubsystemBase{
 
         intakeWristMotor = new CANSparkMax(12, MotorType.kBrushless);
         intakeSpinMotor = new CANSparkFlex(11, MotorType.kBrushless);
-        
+
+
         intakeWristPidController = intakeWristMotor.getPIDController();
         intakeWristPidController.setP(0.0002500000118743628);
         intakeWristPidController.setFF(0.00017499999376013875);
         intakeWristPidController.setSmartMotionAllowedClosedLoopError(0.2, 0);
+
+        digitalSensor = new DigitalInput(1);//TODO: specify channel
 
         tolerence = Constants.IntakeConstants.intakeTolerence;
     }
@@ -60,6 +64,10 @@ public class IntakeSubsystem extends SubsystemBase{
     
     public boolean intakeAtTargetPosition(){
         return Math.abs(target - intakeWristGetPosition()) < tolerence;
+    }
+
+    public boolean isNoteIntaked(){
+        return digitalSensor.get();
     }
 
 

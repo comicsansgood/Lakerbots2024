@@ -4,7 +4,7 @@ import frc.robot.subsystems.TrampulatorSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class TrampulatorManipulatorOrient extends Command {
+public class TrampulatorManipulatorJoystick extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   private final TrampulatorSubsystem m_trampulator;
@@ -12,7 +12,7 @@ public class TrampulatorManipulatorOrient extends Command {
   public double[] scaledValues;
   private final double scaleFactor = 0.2;
 
-  public TrampulatorManipulatorOrient(TrampulatorSubsystem trampulator, XboxController controller) {
+  public TrampulatorManipulatorJoystick(TrampulatorSubsystem trampulator, XboxController controller) {
     m_trampulator = trampulator;
     this.controller = controller;
 
