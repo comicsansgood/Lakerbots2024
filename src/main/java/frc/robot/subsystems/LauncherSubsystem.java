@@ -13,7 +13,11 @@ public class LauncherSubsystem extends SubsystemBase{
     public CANSparkFlex launcherLeftMotor;
     public CANSparkFlex launcherRightMotor;
     public CANSparkMax launcherPivotMotor;
+
     public SparkPIDController launcherPivotPidController;
+    public SparkPIDController launcherLeftVelocityController;
+    public SparkPIDController launcherRightVelocityController;
+
 
 
     public double tolerence;
@@ -28,6 +32,12 @@ public class LauncherSubsystem extends SubsystemBase{
         launcherPivotMotor = new CANSparkMax(14, MotorType.kBrushless);
         launcherPivotPidController = launcherPivotMotor.getPIDController();
         launcherPivotPidController.setP(0.1);//TODO PID tuning
+
+        launcherLeftVelocityController = launcherLeftMotor.getPIDController();
+        launcherLeftVelocityController.setP(1);//TODO: tune pid
+
+        launcherRightVelocityController = launcherRightMotor.getPIDController();
+        launcherRightVelocityController.setP(0.1);//TODO: tune pid
 
         tolerence = Constants.TrampulatorConstants.trampulatorTolerance;
 
@@ -46,6 +56,12 @@ public class LauncherSubsystem extends SubsystemBase{
     public void launcherSet(double val1, double val2){
         launcherLeftMotor.set(val1);
         launcherRightMotor.set(val2);
+    }
+
+
+    public void launcherSetVelocity(double leftVelocity, double rightVelocity){
+        launcherLeftVelocityController.setReference(leftVelocity, ControlType.kSmartVelocity);
+        launcherRightVelocityController.setReference(rightVelocity, ControlType.kSmartVelocity);
     }
 
     public void launcherAim(double theta){

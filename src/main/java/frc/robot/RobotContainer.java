@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ClimberCommands.ClimberGoToPosition;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
 import frc.robot.commands.IntakeCommands.SmartIntake;
@@ -29,6 +30,8 @@ import frc.robot.commands.IntakeCommands.IntakeOut;
 import frc.robot.commands.IntakeCommands.IntakeSpin;
 import frc.robot.commands.LauncherCommands.LauncherGo;
 import frc.robot.commands.LauncherCommands.LauncherStop;
+import frc.robot.commands.TrampulatorCommands.SmartAmpScore;
+import frc.robot.commands.TrampulatorCommands.SmartTrapScore;
 import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.TrampulatorManipulatorJoystick;
 import frc.robot.commands.swervedrive.ZeroGyro;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
@@ -41,6 +44,7 @@ import frc.robot.subsystems.TrampulatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 /**
@@ -60,6 +64,7 @@ public class RobotContainer
   //private final FeederSubsystem m_feeder = new FeederSubsystem();  
   private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final ClimberSubsystem m_climber = new ClimberSubsystem();
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandJoystick driverController = new CommandJoystick(1);
@@ -151,6 +156,8 @@ public class RobotContainer
 
     m_trampulator.setDefaultCommand(new TrampulatorManipulatorJoystick(m_trampulator, driverXbox));
 
+    m_intake.setDefaultCommand(new SmartIntake(m_intake, 0.25, driverXbox, XboxController.Button.kLeftBumper.value));
+
     //NamedCommands.registerCommand("trampSpin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
     //NamedCommands.registerCommand("trampStop", new TrampulatorManipulatorSpin(m_trampulator, 0));
 
@@ -168,23 +175,23 @@ public class RobotContainer
   private void configureBindings(){
 
 
-    //testing
+    /*//testing
     new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSpin(m_intake, 0.1));
     new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSpin(m_intake, 0));
     new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new IntakeIn(m_intake));
     new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new IntakeOut(m_intake));
-
-    //real
-    /* 
-    new JoystickButton(driverXbox, XboxController.Button.kLeftBumper.value).onTrue(new IntakeAuto(m_intake, 0.25));
-    new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO:replace with shoot command
-    
-    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO: replace with score in trap
-    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO: replace with score in amp
-    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO: replace with climber up
-    new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO: replace with climber down
-
 */
+    //real
+     
+    //intake is default command not button btw    
+    new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO:replace with shoot command
+
+    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new SmartTrapScore(m_trampulator));
+    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new SmartAmpScore(m_trampulator));
+    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new ClimberGoToPosition(m_climber, Constants.ClimberConstants.cimberOut));
+    new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new ClimberGoToPosition(m_climber, Constants.ClimberConstants.cimberOut));
+
+
   
 
   }

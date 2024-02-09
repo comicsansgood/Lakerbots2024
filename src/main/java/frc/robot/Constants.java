@@ -65,12 +65,23 @@ public final class Constants
   
   public static class ClimberConstants{
     public static final double climberHome = 0;
+    public static final double cimberOut = 5000;//TODO: programmer math
     public static final double climberLimit = 10000; //TODO: still programmer math
     public static final double climberTolerence = 0.1;//TODO: programmer math
   }
   public static class TrampulatorConstants{
     public static final double trampulatorWristMin = 0;
     public static final double trampulatorWristMax = 10000;//TODO: still programmer math
+    public static final double trampulatorWristAmp = 1000;//TODO:programmer math
+    public static final double trampulatorWristTrap = 1000;//TODO:programmer math
+
+
+    public static final double trampulatorOrientAmp = 10000;//TODO: still programmer math
+    public static final double trampulatorOrientTrap = 10000;//TODO: still programmer math
+    public static final double trampulatorOrientHome = 0;//TODO: still programmer math
+
+
+
     public static final double trampulatorTolerance = 0.1;//TODO: still programmer math
   }
 

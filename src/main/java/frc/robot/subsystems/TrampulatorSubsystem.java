@@ -12,6 +12,9 @@ public class TrampulatorSubsystem extends SubsystemBase{
     
     public CANSparkMax manipulatorTopMotor;
     public CANSparkMax manipulatorBottomMotor;
+    public SparkPIDController manipulatorTopPidController;
+    public SparkPIDController manipulatorBottomPidController;
+
 
     public CANSparkMax trampulatorWristMotor;
     public SparkPIDController trampulatorWristPidController;
@@ -19,12 +22,17 @@ public class TrampulatorSubsystem extends SubsystemBase{
     public double tolerence;
     public double target;
 
+    public double manipulatorTarget;
+
     public TrampulatorSubsystem(){ 
         manipulatorTopMotor = new CANSparkMax(18, MotorType.kBrushless);
         manipulatorBottomMotor = new CANSparkMax(19, MotorType.kBrushless);
         manipulatorTopMotor.setInverted(true);
         manipulatorBottomMotor.setInverted(true);
-        
+
+        manipulatorTopPidController = manipulatorTopMotor.getPIDController();
+        manipulatorBottomPidController = manipulatorBottomMotor.getPIDController();
+
         trampulatorWristMotor = new CANSparkMax(17, MotorType.kBrushless);
         trampulatorWristPidController = trampulatorWristMotor.getPIDController();
         trampulatorWristPidController.setP(0.1);//TODO: pid tuning
@@ -36,6 +44,22 @@ public class TrampulatorSubsystem extends SubsystemBase{
     }
 
     
+    public void trampulatorManipulatorGoToPosition(double position){
+        target = position;
+        manipulatorTopPidController.setReference(target, ControlType.kSmartMotion);
+        manipulatorBottomPidController.setReference(target, ControlType.kSmartMotion);
+    }
+
+    public double[] trampulatorManipulatorGetPosition(){
+        double[] positions = {manipulatorTopMotor.getEncoder().getPosition(), manipulatorBottomMotor.getEncoder().getPosition()};
+        return(positions);
+    }
+
+    public boolean trampulatorManipulatorAtTarget(){
+        return(manipulatorTopMotor.getEncoder().getPosition()-target < tolerence && 
+        manipulatorTopMotor.getEncoder().getPosition()-target < tolerence);
+    }
+
 
     public void trampulatorManipulatorSpin(double speed1, double speed2){
         manipulatorTopMotor.set(speed1);
