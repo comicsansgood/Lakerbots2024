@@ -57,6 +57,9 @@ public class IntakeSubsystem extends SubsystemBase{
         target = Constants.IntakeConstants.intakeHome;
         intakeWristPidController.setReference(target, ControlType.kSmartMotion);
     }
+    public void intakeWristSpin(double speed){
+        intakeWristMotor.set(speed);
+    }
 
     public double intakeWristGetPosition(){
         return intakeWristMotor.getEncoder().getPosition();

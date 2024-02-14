@@ -44,6 +44,10 @@ public class ClimberSubsystem extends SubsystemBase{
         return Math.abs(target - climberGetPosition()) < tolerence;
     }
 
+    public void climberSpin(double speed){
+        climberMotor.set(speed);
+    }
+
 
     
     @Override

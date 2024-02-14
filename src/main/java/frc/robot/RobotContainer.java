@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -11,6 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,11 +23,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ClimberCommands.ClimberGoToPosition;
+import frc.robot.commands.ClimberCommands.ClimberSpin;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
 import frc.robot.commands.IntakeCommands.SmartIntake;
 import frc.robot.commands.IntakeCommands.IntakeHome;
 import frc.robot.commands.IntakeCommands.IntakeIn;
+import frc.robot.commands.IntakeCommands.IntakeWristSpin;
 import frc.robot.commands.IntakeCommands.IntakeOut;
 import frc.robot.commands.IntakeCommands.IntakeSpin;
 import frc.robot.commands.LauncherCommands.LauncherGo;
@@ -33,6 +37,7 @@ import frc.robot.commands.LauncherCommands.LauncherStop;
 import frc.robot.commands.TrampulatorCommands.SmartAmpScore;
 import frc.robot.commands.TrampulatorCommands.SmartTrapScore;
 import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.TrampulatorManipulatorJoystick;
+import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.TrampulatorManipulatorSpin;
 import frc.robot.commands.swervedrive.ZeroGyro;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
@@ -61,10 +66,14 @@ public class RobotContainer
                                                                          "swerve/falcon"));
   //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   //private final LauncherSubsystem m_launcher = new LauncherSubsystem();
-  //private final FeederSubsystem m_feeder = new FeederSubsystem();  
-  private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
+  //private final FeederSubsystem m_feeder = new FeederSubsystem();
+  
+  
+  
+  //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimberSubsystem m_climber = new ClimberSubsystem();
+  
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandJoystick driverController = new CommandJoystick(1);
@@ -93,10 +102,13 @@ public class RobotContainer
     // Configure the trigger bindings
   SmartDashboard.putData("drive to 0,0,0", new DriveToTarget(m_drivetrain, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
   SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(m_drivetrain, new Pose2d(new Translation2d(1,1), new Rotation2d(0)), 0.5, 1));
-  SmartDashboard.putData("intake spin", new IntakeSpin(m_intake, 0.6));
+  
+  
+  /*SmartDashboard.putData("intake spin", new IntakeSpin(m_intake, 0.6));
     SmartDashboard.putData("intake stop", new IntakeSpin(m_intake, 0));
   SmartDashboard.putData("intake out", new IntakeOut(m_intake));
   SmartDashboard.putData("intake home", new IntakeHome(m_intake));
+  */
 
 
   //SmartDashboard.putData("trampspin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
@@ -126,11 +138,11 @@ public class RobotContainer
                                                                          () -> driverXbox.getRawAxis(5));//2
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(m_drivetrain,
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
+                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftY(),
                                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
+                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftX(),
                                                                                                   OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
+                                                                      () -> MathUtil.applyDeadband(-driverXbox.getRightX(),
                                                                                                   OperatorConstants.RIGHT_X_DEADBAND), 
                                                                       tempController::getYButtonPressed, 
                                                                       tempController::getAButtonPressed, 
@@ -152,11 +164,11 @@ public class RobotContainer
     //m_drivetrain.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
 
     //We use this one
-    //m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
+    m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
 
-    m_trampulator.setDefaultCommand(new TrampulatorManipulatorJoystick(m_trampulator, driverXbox));
+    //m_trampulator.setDefaultCommand(new TrampulatorManipulatorJoystick(m_trampulator, driverXbox));
 
-    m_intake.setDefaultCommand(new SmartIntake(m_intake, 0.25, driverXbox, XboxController.Button.kLeftBumper.value));
+    //m_intake.setDefaultCommand(new SmartIntake(m_intake, 0.25, driverXbox, XboxController.Button.kLeftBumper.value));
 
     //NamedCommands.registerCommand("trampSpin", new TrampulatorManipulatorSpin(m_trampulator, 0.25));
     //NamedCommands.registerCommand("trampStop", new TrampulatorManipulatorSpin(m_trampulator, 0));
@@ -175,23 +187,28 @@ public class RobotContainer
   private void configureBindings(){
 
 
-    /*//testing
-    new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSpin(m_intake, 0.1));
+    
+    new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSpin(m_intake, 0.8));
     new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSpin(m_intake, 0));
     new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new IntakeIn(m_intake));
     new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new IntakeOut(m_intake));
-*/
+    new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new IntakeWristSpin(m_intake, 0.3));
+    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new IntakeWristSpin(m_intake, 0.0));
+    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new IntakeWristSpin(m_intake, -0.3));
+    //new JoystickButton(d)
+
     //real
      
     //intake is default command not button btw    
-    new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO:replace with shoot command
+   // new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new ExampleCommand(new ExampleSubsystem()));//TODO:replace with shoot command
 
-    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new SmartTrapScore(m_trampulator));
-    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new SmartAmpScore(m_trampulator));
-    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new ClimberGoToPosition(m_climber, Constants.ClimberConstants.cimberOut));
-    new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new ClimberGoToPosition(m_climber, Constants.ClimberConstants.cimberOut));
-
-
+    //new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new SmartTrapScore(m_trampulator));
+    //new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new SmartAmpScore(m_trampulator));
+   // new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new ClimberGoToPosition(m_climber, Constants.ClimberConstants.cimberOut));
+    //new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new ClimberGoToPosition(m_climber, Constants.ClimberConstants.cimberOut));
+    // new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new ClimberSpin(m_climber,0.5));
+   // new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new ClimberSpin(m_climber,0.0));
+//new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new ClimberSpin(m_climber,-0.5));
   
 
   }
