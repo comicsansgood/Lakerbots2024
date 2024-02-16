@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -36,11 +37,14 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+
 public class SwerveSubsystem extends SubsystemBase
 {
 
  
   private final SwerveDrive swerveDrive;
+  private Pigeon2 gyro;
   
   public double maximumSpeed = Units.feetToMeters(14.5);
   
@@ -79,7 +83,7 @@ public class SwerveSubsystem extends SubsystemBase
       throw new RuntimeException(e);
     }
     swerveDrive.setHeadingCorrection(true); // Heading correction should only be used while controlling the robot via angle.
-
+    gyro = (Pigeon2)swerveDrive.swerveDriveConfiguration.imu.getIMU();
     setupPathPlanner();
   }
 
@@ -286,6 +290,9 @@ public class SwerveSubsystem extends SubsystemBase
     SmartDashboard.putNumber("odom x", getPose().getX());
     SmartDashboard.putNumber("odom y", getPose().getY());
     SmartDashboard.putNumber("odom theta", getPose().getRotation().getDegrees());
+
+    SmartDashboard.putNumber("---heading---", getHeading().getDegrees());
+    SmartDashboard.putNumber("---Gyro---", gyro.getAngle());
   }
 
   @Override

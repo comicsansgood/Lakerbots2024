@@ -30,7 +30,7 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeWristPidController.setP(0.0002500000118743628);
         intakeWristPidController.setFF(0.00017499999376013875);
         intakeWristPidController.setSmartMotionAllowedClosedLoopError(0.2, 0);
-
+        //intakeWristPidController.setSmartMotionMaxVelocity(target, 0)
         digitalSensor = new DigitalInput(1);//TODO: specify channel
 
         tolerence = Constants.IntakeConstants.intakeTolerence;

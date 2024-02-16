@@ -97,6 +97,7 @@ public class RobotContainer
 
     m_chooser.addOption("redReal", m_drivetrain.getAutonomousCommand("redreal", true));
     m_chooser.addOption("tramp_auto_test", m_drivetrain.getAutoNew("tramp_auto_test"));
+    m_chooser.addOption("kraken", m_drivetrain.getAutonomousCommand("kraken", true));
     SmartDashboard.putData("autochooser", m_chooser);
     
     // Configure the trigger bindings
@@ -121,7 +122,7 @@ public class RobotContainer
     AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(m_drivetrain,
                                                           // Applies deadbands and inverts controls because joysticks
                                                           // are back-right positive while robot
-                                                          // controls are front-left positive
+                                                            // controls are front-left positive
                                                           () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
                                                                                        OperatorConstants.LEFT_Y_DEADBAND),
                                                           () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
@@ -161,10 +162,18 @@ public class RobotContainer
         () -> MathUtil.applyDeadband(driverController.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
         () -> -driverController.getRawAxis(2), () -> true);
 
+    //custom
+    TeleopDrive DriveTest = new TeleopDrive(
+        m_drivetrain,
+        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+        () -> -driverXbox.getRawAxis(4), () -> true);
+
     //m_drivetrain.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
 
     //We use this one
-    m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
+    //m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
+    m_drivetrain.setDefaultCommand(DriveTest);
 
     //m_trampulator.setDefaultCommand(new TrampulatorManipulatorJoystick(m_trampulator, driverXbox));
 
