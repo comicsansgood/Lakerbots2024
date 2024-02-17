@@ -292,7 +292,7 @@ public class SwerveSubsystem extends SubsystemBase
     SmartDashboard.putNumber("odom theta", getPose().getRotation().getDegrees());
 
     SmartDashboard.putNumber("---heading---", getHeading().getDegrees());
-    SmartDashboard.putNumber("---Gyro---", gyro.getAngle());
+    SmartDashboard.putNumber("---Gyro---", gyro.getYaw().getValue());
   }
 
   @Override

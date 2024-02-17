@@ -98,6 +98,7 @@ public class RobotContainer
     m_chooser.addOption("redReal", m_drivetrain.getAutonomousCommand("redreal", true));
     m_chooser.addOption("tramp_auto_test", m_drivetrain.getAutoNew("tramp_auto_test"));
     m_chooser.addOption("kraken", m_drivetrain.getAutonomousCommand("kraken", true));
+    m_chooser.addOption("slow", m_drivetrain.getAutonomousCommand("slow", true));
     SmartDashboard.putData("autochooser", m_chooser);
     
     // Configure the trigger bindings
@@ -139,11 +140,11 @@ public class RobotContainer
                                                                          () -> driverXbox.getRawAxis(5));//2
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(m_drivetrain,
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftY(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
                                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftX(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                                                                                                   OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getRightX(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                                                                                                   OperatorConstants.RIGHT_X_DEADBAND), 
                                                                       tempController::getYButtonPressed, 
                                                                       tempController::getAButtonPressed, 
@@ -172,8 +173,8 @@ public class RobotContainer
     //m_drivetrain.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
 
     //We use this one
-    //m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
-    m_drivetrain.setDefaultCommand(DriveTest);
+    m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
+    //m_drivetrain.setDefaultCommand(DriveTest);
 
     //m_trampulator.setDefaultCommand(new TrampulatorManipulatorJoystick(m_trampulator, driverXbox));
 
