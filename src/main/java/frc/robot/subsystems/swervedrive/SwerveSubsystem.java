@@ -15,7 +15,9 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -360,7 +362,7 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.zeroGyro();
   }
 
-
+  
   /**
    * Sets the drive motors to brake/coast mode.
    *
@@ -469,6 +471,10 @@ public class SwerveSubsystem extends SubsystemBase
   public void lock()
   {
     swerveDrive.lockPose();
+  }
+
+  public void gyroBack(){
+    swerveDrive.setGyro(new Rotation3d(0, 0, 180));
   }
 
   /**

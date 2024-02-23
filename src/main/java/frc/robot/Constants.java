@@ -58,8 +58,8 @@ public final class Constants
 
   public static class IntakeConstants{
     public static final double intakeHome = 0;
-    public static final double intakeIn = 0; //TODO:programmer math
-    public static final double intakeOut = 2; //TODO: still programmer math
+    public static final double intakeIn = -0.5; //TODO:programmer math
+    public static final double intakeOut = -5; //TODO: still programmer math
     public static final double intakeTolerence = 0.1; //TODO : programmer math
   } 
   
