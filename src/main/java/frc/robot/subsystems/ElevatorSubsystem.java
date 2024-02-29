@@ -19,9 +19,13 @@ public class ElevatorSubsystem extends SubsystemBase{
     public ElevatorSubsystem(){
         elevatorMotor = new CANSparkFlex(16, MotorType.kBrushless);
         elevatorPidController = elevatorMotor.getPIDController();
-        elevatorPidController.setP(0.1);//TODO:pid tuning
+        elevatorPidController.setFF(0.00026);
+        elevatorPidController.setSmartMotionMaxVelocity(4000, 0);
+        elevatorPidController.setSmartMotionMaxAccel(3000, 0);
 
         tolerence = Constants.ElevatorConstants.elevatorTolerence;
+
+        elevatorMotor.getEncoder().setPosition(0);
     }
 
     public void elevatorSetTarget(double target){

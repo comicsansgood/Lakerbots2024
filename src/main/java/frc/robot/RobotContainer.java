@@ -24,20 +24,27 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ClimberCommands.ClimberGoToPosition;
 import frc.robot.commands.ClimberCommands.ClimberSpin;
+import frc.robot.commands.ElevatorCommands.ElevatorGoToPosition;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
 import frc.robot.commands.IntakeCommands.SmartIntake;
-import frc.robot.commands.IntakeCommands.IntakeHome;
-import frc.robot.commands.IntakeCommands.IntakeIn;
+import frc.robot.commands.IntakeCommands.IntakeWristHome;
+import frc.robot.commands.IntakeCommands.IntakeWristIn;
 import frc.robot.commands.IntakeCommands.IntakeWristSpin;
-import frc.robot.commands.IntakeCommands.IntakeOut;
+import frc.robot.commands.IntakeCommands.IntakeWristOut;
+import frc.robot.commands.IntakeCommands.IntakeCollect;
+import frc.robot.commands.IntakeCommands.IntakeSetVelocity;
 import frc.robot.commands.IntakeCommands.IntakeSpin;
+import frc.robot.commands.IntakeCommands.IntakeStopCollect;
+import frc.robot.commands.LauncherCommands.LauncherAim;
 import frc.robot.commands.LauncherCommands.LauncherGo;
 import frc.robot.commands.LauncherCommands.LauncherStop;
+import frc.robot.commands.LauncherCommands.LaunchWithDelay;
 import frc.robot.commands.TrampulatorCommands.SmartAmpScore;
 import frc.robot.commands.TrampulatorCommands.SmartTrapScore;
 import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.TrampulatorManipulatorJoystick;
 import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.TrampulatorManipulatorSpin;
+import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.TrampulatorWristGoToPosition;
 import frc.robot.commands.swervedrive.GyroBack;
 import frc.robot.commands.swervedrive.ZeroGyro;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
@@ -54,6 +61,7 @@ import swervelib.SwerveDrive;
 import java.io.File;
 
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 /**
@@ -69,13 +77,14 @@ public class RobotContainer
   private final SwerveSubsystem m_drivetrain = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/falcon"));
   //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
-  //private final LauncherSubsystem m_launcher = new LauncherSubsystem();
-  //private final FeederSubsystem m_feeder = new FeederSubsystem();
-
+  private final LauncherSubsystem m_launcher = new LauncherSubsystem();
+  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  private final FeederSubsystem m_feeder = new FeederSubsystem();
   
   
   
-  //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
+  
+  private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimberSubsystem m_climber = new ClimberSubsystem();
   
@@ -179,7 +188,9 @@ public class RobotContainer
     //m_drivetrain.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
 
     //We use this one
+
     m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
+    
     //m_drivetrain.setDefaultCommand(DriveTest);
 
     //m_trampulator.setDefaultCommand(new TrampulatorManipulatorJoystick(m_trampulator, driverXbox));
@@ -204,12 +215,38 @@ public class RobotContainer
 
 
     
-    new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSpin(m_intake, 0.8));
-    new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSpin(m_intake, 0));
-    new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new IntakeIn(m_intake));
-    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new IntakeOut(m_intake));
-    new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new IntakeWristSpin(m_intake, 0.3));
-    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new IntakeWristSpin(m_intake, 0.0));
+    //new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSpin(m_intake, 0.8));
+    //new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSpin(m_intake, 0));
+    /*new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSetVelocity(m_intake, 3000));
+    new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSetVelocity(m_intake, 0));
+    new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new IntakeWristIn(m_intake));
+    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new IntakeWristOut(m_intake));
+    */
+    new JoystickButton(driverXbox, XboxController. Button.kLeftBumper.value).onTrue(new SmartIntake(m_intake,m_feeder));
+
+    //new JoystickButton(driverXbox, XboxController. Button.kLeftBumper.value).onTrue(new IntakeCollect(m_intake,m_feeder));
+    //new JoystickButton(driverXbox, XboxController. Button.kRightBumper.value).onTrue(new IntakeStopCollect(m_intake,m_feeder));
+    new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new LauncherAim(m_launcher, 47.5));
+    new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new LauncherAim(m_launcher, 0));
+   //new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new LaunchWithDelay(m_drivetrain,m_launcher,m_feeder));
+   //new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new LauncherStop(m_launcher));
+    new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new ClimberGoToPosition(m_climber, -100));
+    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new ClimberGoToPosition(m_climber, 0));
+    //new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new ClimberGoToPosition(m_climber, 10));
+   
+   // new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new ElevatorGoToPosition(m_elevator, -100));
+    //new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new ElevatorGoToPosition(m_elevator, -50));
+    //new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new ElevatorGoToPosition(m_elevator, 0));
+
+
+
+
+
+
+    new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new ElevatorGoToPosition(m_elevator, -20));
+    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new ElevatorGoToPosition(m_elevator, -120));
+
+    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new TrampulatorWristGoToPosition(m_trampulator,40));
     new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new IntakeWristSpin(m_intake, -0.3));
     //new JoystickButton(d)
 

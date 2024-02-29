@@ -21,19 +21,17 @@ public class ClimberSubsystem extends SubsystemBase{
     public ClimberSubsystem(){
         climberMotor = new CANSparkFlex(15, MotorType.kBrushless);
         climberPidController = climberMotor.getPIDController();
-        climberPidController.setP(0.1);//TODO tune PID
+        climberPidController.setFF(0.00025);//TODO tune PID
+        climberPidController.setSmartMotionMaxVelocity(4000, 0);
+        climberPidController.setSmartMotionMaxAccel(3000, 0);
 
         tolerence = Constants.ClimberConstants.climberTolerence;
+        climberMotor.getEncoder().setPosition(0);
     }
 
     public void climberSetTarget(double reference){
-        if(reference > Constants.ClimberConstants.climberLimit || reference < Constants.ClimberConstants.climberHome){
-            System.out.println("cannot set reference outside climber limits");
-        }
-        else{
             target = reference;
             climberPidController.setReference(target, ControlType.kSmartMotion);
-        }
     }
 
     public double climberGetPosition(){

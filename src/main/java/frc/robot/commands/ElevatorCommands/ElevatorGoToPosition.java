@@ -4,7 +4,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ElevatorExtend extends Command {
+public class ElevatorGoToPosition extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   
@@ -12,7 +12,7 @@ public class ElevatorExtend extends Command {
   public double position;
 
   
-  public ElevatorExtend(ElevatorSubsystem elevator, double position) {
+  public ElevatorGoToPosition(ElevatorSubsystem elevator, double position) {
     m_elevator = elevator;
     this.position = position;
     addRequirements(m_elevator);

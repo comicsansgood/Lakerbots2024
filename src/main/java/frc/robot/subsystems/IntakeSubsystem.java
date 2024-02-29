@@ -6,15 +6,24 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import au.grapplerobotics.ConfigurationFailedException;
+import au.grapplerobotics.LaserCan;
+
+
 import frc.robot.Constants;
+
 
 public class IntakeSubsystem extends SubsystemBase{
 
     public CANSparkMax intakeWristMotor;
     public CANSparkFlex intakeSpinMotor;
     public SparkPIDController intakeWristPidController;
-    private DigitalInput digitalSensor;
+    public SparkPIDController intakeSpinPidController;
+
+    public LaserCan laserCan;
+    public final int pieceDistanceThreshold = 150;
 
     public double tolerence;
     public double target;
@@ -38,8 +47,24 @@ public class IntakeSubsystem extends SubsystemBase{
                 intakeWristPidController.setSmartMotionMaxVelocity(200, 1); 
                 intakeWristPidController.setSmartMotionMaxAccel(150, 1);
 
+
+
+        intakeSpinPidController = intakeSpinMotor.getPIDController();
+            intakeSpinPidController.setP(0.0010000000474974513);
+            intakeSpinPidController.setFF(0.0003100000030826777);
+
         //intakeWristPidController.setSmartMotionMaxVelocity(target, 0)
-        digitalSensor = new DigitalInput(1);//TODO: specify channel
+
+        laserCan = new LaserCan(0);
+        try {
+            laserCan.setRangingMode(LaserCan.RangingMode.SHORT);
+            laserCan.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 4, 4));
+            laserCan.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+        } catch (ConfigurationFailedException e) {
+            System.out.println("Configuration failed! " + e);
+        }
+
+        intakeWristMotor.getEncoder().setPosition(0);
 
         tolerence = Constants.IntakeConstants.intakeTolerence;
     }
@@ -51,6 +76,12 @@ public class IntakeSubsystem extends SubsystemBase{
     public void intakeStop(){
         intakeSpinMotor.set(0);
     }
+
+
+    public void intakeSetVelocity(double reference){
+        intakeSpinPidController.setReference(reference, ControlType.kVelocity);
+    }
+
 
     public void intakeOut(){
         target = Constants.IntakeConstants.intakeOut;
@@ -77,14 +108,24 @@ public class IntakeSubsystem extends SubsystemBase{
         return Math.abs(target - intakeWristGetPosition()) < tolerence;
     }
 
-    public boolean isNoteIntaked(){
-        return digitalSensor.get();
+    public double getIntakeTargetPosition(){
+        return target;
     }
+
+    public int getLaserMeasurment(){
+        return laserCan.getMeasurement().distance_mm;
+    }
+
+    public boolean isNoteIntaked(){
+        return (getLaserMeasurment() - pieceDistanceThreshold <= 0);
+    }
+
 
 
     @Override
     public void periodic(){
-
+        SmartDashboard.putBoolean("isNoteIntaked", isNoteIntaked());
+        SmartDashboard.putNumber("lasercan reading", getLaserMeasurment());
     }
 
 }

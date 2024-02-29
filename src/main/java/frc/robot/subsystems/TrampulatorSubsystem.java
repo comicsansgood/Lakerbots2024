@@ -35,7 +35,10 @@ public class TrampulatorSubsystem extends SubsystemBase{
 
         trampulatorWristMotor = new CANSparkMax(17, MotorType.kBrushless);
         trampulatorWristPidController = trampulatorWristMotor.getPIDController();
-        trampulatorWristPidController.setP(0.1);//TODO: pid tuning
+        trampulatorWristPidController.setFF(0.000167);
+        trampulatorWristPidController.setP(0.0001);//TODO: pid tuning
+        trampulatorWristPidController.setSmartMotionMaxVelocity(1000, 0);
+        trampulatorWristPidController.setSmartMotionMaxAccel(1000, 0);
 
         tolerence = Constants.TrampulatorConstants.trampulatorTolerance;
         

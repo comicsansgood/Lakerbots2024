@@ -4,21 +4,21 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class IntakeIn extends Command {
+public class IntakeWristOut extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   
   private final IntakeSubsystem m_intake;
 
   
-  public IntakeIn(IntakeSubsystem intake) {
+  public IntakeWristOut(IntakeSubsystem intake) {
     m_intake = intake;
     addRequirements(m_intake);
   }
 
   @Override
   public void initialize() {
-    m_intake.intakeIn();
+    m_intake.intakeOut();
   }
 
   @Override

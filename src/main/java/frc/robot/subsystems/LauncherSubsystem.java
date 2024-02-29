@@ -33,7 +33,9 @@ public class LauncherSubsystem extends SubsystemBase{
         //launcher pivot
         launcherPivotMotor = new CANSparkMax(14, MotorType.kBrushless);
             launcherPivotPidController = launcherPivotMotor.getPIDController();
-            launcherPivotPidController.setP(0.001);//TODO PID tuning
+            launcherPivotPidController.setFF(0.0005);//TODO PID tuning
+            launcherPivotPidController.setSmartMotionMaxVelocity(2000,0);
+            launcherPivotPidController.setSmartMotionMaxAccel(2000, 0);
 
         launcherLeftVelocityController = launcherLeftMotor.getPIDController();
         launcherLeftVelocityController.setP(1);//TODO: tune pid
@@ -42,12 +44,11 @@ public class LauncherSubsystem extends SubsystemBase{
         launcherRightVelocityController.setP(0.1);//TODO: tune pid
 
         tolerence = Constants.TrampulatorConstants.trampulatorTolerance;
-
-    }
+     }
 
     public void launcherGo(){
-        launcherLeftMotor.set(.95);
-        launcherRightMotor.set(.65);
+        launcherLeftMotor.set(-.95);
+        launcherRightMotor.set(-.65);
     }
 
 
