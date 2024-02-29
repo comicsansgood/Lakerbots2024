@@ -78,7 +78,7 @@ public class RobotContainer
                                                                          "swerve/falcon"));
   //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   private final LauncherSubsystem m_launcher = new LauncherSubsystem();
-  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final FeederSubsystem m_feeder = new FeederSubsystem();
   
   
@@ -113,6 +113,7 @@ public class RobotContainer
     m_chooser.addOption("tramp_auto_test", m_drivetrain.getAutoNew("tramp_auto_test"));
     m_chooser.addOption("kraken", m_drivetrain.getAutonomousCommand("kraken", true));
     m_chooser.addOption("slow", m_drivetrain.getAutonomousCommand("slow", true));
+    m_chooser.addOption("shootDaPiece", new LauncherAim(m_launcher, 47.5).andThen(new LauncherGo(m_launcher)));
     SmartDashboard.putData("autochooser", m_chooser);
     
     // Configure the trigger bindings
@@ -156,11 +157,11 @@ public class RobotContainer
                                                                          */
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(m_drivetrain,
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftY(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
                                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftX(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                                                                                                   OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getRightX(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                                                                                                   OperatorConstants.RIGHT_X_DEADBAND), 
                                                                       tempController::getYButtonPressed, 
                                                                       tempController::getAButtonPressed, 
@@ -229,10 +230,10 @@ public class RobotContainer
     //new JoystickButton(driverXbox, XboxController. Button.kRightBumper.value).onTrue(new IntakeStopCollect(m_intake,m_feeder));
     new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new LauncherAim(m_launcher, 47.5));
     new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new LauncherAim(m_launcher, 0));
-   //new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new LaunchWithDelay(m_drivetrain,m_launcher,m_feeder));
-   //new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new LauncherStop(m_launcher));
-    new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new ClimberGoToPosition(m_climber, -100));
-    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new ClimberGoToPosition(m_climber, 0));
+   new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new LaunchWithDelay(m_drivetrain,m_launcher,m_feeder));
+   new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new LauncherStop(m_launcher));
+    //new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new ClimberGoToPosition(m_climber, -100));
+    //new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new ClimberGoToPosition(m_climber, 0));
     //new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new ClimberGoToPosition(m_climber, 10));
    
    // new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new ElevatorGoToPosition(m_elevator, -100));

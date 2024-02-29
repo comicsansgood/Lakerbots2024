@@ -21,6 +21,7 @@ public class TrampulatorSubsystem extends SubsystemBase{
 
     public double tolerence;
     public double target;
+    public final double ampThreshold = 30;
 
     public double manipulatorTarget;
 
@@ -51,6 +52,10 @@ public class TrampulatorSubsystem extends SubsystemBase{
         target = position;
         manipulatorTopPidController.setReference(target, ControlType.kSmartMotion);
         manipulatorBottomPidController.setReference(target, ControlType.kSmartMotion);
+    }
+
+    public boolean trampulatorIsNoteIntaked(){
+        return ((manipulatorTopMotor.getOutputCurrent() + manipulatorBottomMotor.getOutputCurrent())/2 > ampThreshold);
     }
 
     public double[] trampulatorManipulatorGetPosition(){

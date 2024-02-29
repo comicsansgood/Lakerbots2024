@@ -18,7 +18,7 @@ public class TrampulatorManipulatorOrient extends Command {
 
   @Override
   public void initialize() {
-    m_trampulator.trampulatorWristSetTarget(position);
+    m_trampulator.trampulatorManipulatorGoToPosition(position);
 
   }
 
@@ -33,6 +33,6 @@ public class TrampulatorManipulatorOrient extends Command {
   }
   @Override
   public boolean isFinished() {
-    return m_trampulator.TrampulatorAtTargetPosition();
+    return m_trampulator.trampulatorManipulatorAtTarget();
   }
 }
