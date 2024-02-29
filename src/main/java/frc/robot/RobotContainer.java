@@ -134,7 +134,7 @@ public class RobotContainer
 
 
     configureBindings();
-
+/* 
     AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(m_drivetrain,
                                                           // Applies deadbands and inverts controls because joysticks
                                                           // are back-right positive while robot
@@ -153,19 +153,20 @@ public class RobotContainer
                                                                          () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                                                                                                       OperatorConstants.LEFT_X_DEADBAND),
                                                                          () -> driverXbox.getRawAxis(5));//2
+                                                                         */
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(m_drivetrain,
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
+                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftY(),
                                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
+                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftX(),
                                                                                                   OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
+                                                                      () -> MathUtil.applyDeadband(-driverXbox.getRightX(),
                                                                                                   OperatorConstants.RIGHT_X_DEADBAND), 
                                                                       tempController::getYButtonPressed, 
                                                                       tempController::getAButtonPressed, 
                                                                       tempController::getXButtonPressed, 
                                                                       tempController::getBButtonPressed);
-
+/* 
     TeleopDrive simClosedFieldRel = new TeleopDrive(m_drivetrain,
                                                     () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
                                                                                  OperatorConstants.LEFT_Y_DEADBAND),
@@ -184,7 +185,7 @@ public class RobotContainer
         () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(driverXbox.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
         () -> -driverXbox.getRawAxis(4), () -> true);
-
+*/
     //m_drivetrain.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
 
     //We use this one
@@ -248,6 +249,9 @@ public class RobotContainer
 
     new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new TrampulatorWristGoToPosition(m_trampulator,40));
     new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new IntakeWristSpin(m_intake, -0.3));
+    new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new FeederGo(m_feeder, 0));
+    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new FeederGo(m_feeder, -0.2));
+
     //new JoystickButton(d)
 
     //real

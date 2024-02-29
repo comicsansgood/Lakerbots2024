@@ -28,7 +28,7 @@ public class IntakeCollect extends Command {
 
   @Override
   public void initialize() {
-    m_intake.intakeSpin(1);
+    m_intake.intakeSpin(.8);
     //m_intake.intakeSetVelocity(5000);
     m_intake.intakeOut();
     m_feeder.feederGo(-.6);

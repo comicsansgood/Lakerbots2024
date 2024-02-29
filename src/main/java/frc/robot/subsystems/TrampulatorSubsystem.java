@@ -78,12 +78,10 @@ public class TrampulatorSubsystem extends SubsystemBase{
     }
     
     public void trampulatorWristSetTarget(double reference){
-        if(!(reference < Constants.TrampulatorConstants.trampulatorWristMin && reference > Constants.TrampulatorConstants.trampulatorWristMax)){
-            System.out.println("cannot set reference outside limits");
-        }else{
+       
             target = reference;
             trampulatorWristPidController.setReference(target, ControlType.kSmartMotion);
-        }
+        
     }
 
     public double trampulatorWristGetPosition(){
