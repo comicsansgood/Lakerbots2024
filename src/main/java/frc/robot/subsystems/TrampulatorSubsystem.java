@@ -3,6 +3,7 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,6 +31,10 @@ public class TrampulatorSubsystem extends SubsystemBase{
         manipulatorBottomMotor = new CANSparkMax(19, MotorType.kBrushless);
         manipulatorTopMotor.setInverted(true);
         manipulatorBottomMotor.setInverted(true);
+
+        manipulatorTopMotor.setIdleMode(IdleMode.kBrake);
+        manipulatorBottomMotor.setIdleMode(IdleMode.kBrake);
+
 
         manipulatorTopPidController = manipulatorTopMotor.getPIDController();
         manipulatorBottomPidController = manipulatorBottomMotor.getPIDController();
@@ -97,6 +102,9 @@ public class TrampulatorSubsystem extends SubsystemBase{
         return Math.abs(target - trampulatorWristMotor.getEncoder().getPosition()) < Constants.TrampulatorConstants.trampulatorTolerance;
     }
 
+    public void trampulatorWristSpin(double speed){
+        trampulatorWristMotor.set(speed);
+    }
     
     
 

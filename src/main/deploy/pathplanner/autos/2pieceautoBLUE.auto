@@ -1,0 +1,50 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 6.4,
+      "y": 2.4
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootCenterSubwoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AimFromMiddlePiece"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "subwoofer-middleBLUE"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TurnEverythingOnForever"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

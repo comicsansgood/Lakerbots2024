@@ -1,31 +1,30 @@
 package frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands;
 
 import frc.robot.subsystems.TrampulatorSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class TrampulatorManipulatorOrient extends Command {
+public class TrampulatorManipulatorSpinAdv extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-
   private final TrampulatorSubsystem m_trampulator;
-  private XboxController controller;
+  double speed1;
+  double speed2;
 
-  public TrampulatorManipulatorOrient(TrampulatorSubsystem trampulator, XboxController controller) {
+  public TrampulatorManipulatorSpinAdv(TrampulatorSubsystem trampulator, double speed1, double speed2) {
    m_trampulator = trampulator;
-   this.controller = controller;
+   this.speed1 = speed1;
+   this.speed2 = speed2;
 
     addRequirements(m_trampulator);
   }
 
   @Override
   public void initialize() {
+    m_trampulator.trampulatorManipulatorSpin(speed1, speed2);
 
   }
 
   @Override
-  public void execute() {
-      m_trampulator.trampulatorManipulatorSpin(controller.getRightY()/2, -controller.getRightY()/2);
-  }
+  public void execute() {}
 
   @Override
   public void end(boolean interrupted) {
@@ -33,6 +32,6 @@ public class TrampulatorManipulatorOrient extends Command {
   }
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

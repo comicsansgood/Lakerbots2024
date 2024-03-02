@@ -23,7 +23,7 @@ public class IntakeSubsystem extends SubsystemBase{
     public SparkPIDController intakeSpinPidController;
 
     public LaserCan laserCan;
-    public final int pieceDistanceThreshold = 150;
+    public final int pieceDistanceThreshold = 80;
 
     public double tolerence;
     public double target;
@@ -33,6 +33,8 @@ public class IntakeSubsystem extends SubsystemBase{
 
         intakeWristMotor = new CANSparkMax(12, MotorType.kBrushless);
         intakeSpinMotor = new CANSparkFlex(11, MotorType.kBrushless);
+
+        intakeSpinMotor.setSmartCurrentLimit(80);
 
         //intake Wrist Pid
         intakeWristPidController = intakeWristMotor.getPIDController();
@@ -120,12 +122,17 @@ public class IntakeSubsystem extends SubsystemBase{
         return (getLaserMeasurment() - pieceDistanceThreshold <= 0);
     }
 
+    public double getIntakeTemperature(){
+        return intakeSpinMotor.getMotorTemperature();
+    }
+
 
 
     @Override
     public void periodic(){
         SmartDashboard.putBoolean("isNoteIntaked", isNoteIntaked());
         SmartDashboard.putNumber("lasercan reading", getLaserMeasurment());
+        SmartDashboard.putNumber("Intake Motor Temperature",getIntakeTemperature());
     }
 
 }

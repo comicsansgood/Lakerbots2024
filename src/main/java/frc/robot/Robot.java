@@ -105,10 +105,16 @@ public class Robot extends TimedRobot
     m_robotContainer.setMotorBrake(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+    //Zm_elevator.elevatorSetTarget(-20);
+
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
     {
       m_autonomousCommand.schedule();
+    }
+    else{
+      System.out.println("No auto command :(");
     }
   }
 
@@ -133,7 +139,7 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
-    m_elevator.elevatorSetTarget(-50);
+    //m_elevator.elevatorSetTarget(-20);
   }
 
   /**

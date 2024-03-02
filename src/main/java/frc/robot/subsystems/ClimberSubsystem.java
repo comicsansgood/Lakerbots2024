@@ -3,11 +3,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
 
 public class ClimberSubsystem extends SubsystemBase{
 
@@ -20,6 +19,7 @@ public class ClimberSubsystem extends SubsystemBase{
 
     public ClimberSubsystem(){
         climberMotor = new CANSparkFlex(15, MotorType.kBrushless);
+        climberMotor.setIdleMode(IdleMode.kBrake);
         climberPidController = climberMotor.getPIDController();
         climberPidController.setFF(0.00025);//TODO tune PID
         climberPidController.setSmartMotionMaxVelocity(4000, 0);

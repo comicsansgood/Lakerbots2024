@@ -6,27 +6,31 @@ import frc.robot.Constants;
 import frc.robot.commands.ElevatorCommands.ElevatorGoToPosition;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
+import frc.robot.commands.IntakeCommands.IntakeSpin;
 import frc.robot.commands.swervedrive.AimAtSpeaker;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
-public class LaunchWithDelay extends SequentialCommandGroup {
+public class LaunchWithDelayAndStartIntake extends SequentialCommandGroup {
 
-    public LaunchWithDelay(
+    public LaunchWithDelayAndStartIntake(
         SwerveSubsystem drivetrain, 
         LauncherSubsystem launcher, 
         FeederSubsystem feeder,
-        ElevatorSubsystem elevator)
+        ElevatorSubsystem elevator,
+        IntakeSubsystem intake)
     {
         addCommands(
             new ElevatorGoToPosition(elevator, -20),
             new WaitCommand(0.4),
             new LauncherGo(launcher),
             new WaitCommand(0.8),
-            new FeederGo(feeder, -1),
+            new FeederGo(feeder, -0.8),
+            new IntakeSpin(intake, 0.75),
             new WaitCommand(1),
             new LauncherStop(launcher),
             new FeederStop(feeder),

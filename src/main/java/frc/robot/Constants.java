@@ -47,7 +47,7 @@ public final class Constants
     public static final double LEFT_X_DEADBAND = 0.1; //used to be .01
     public static final double LEFT_Y_DEADBAND = 0.1; //used to be .01
     public static final double RIGHT_X_DEADBAND = 0.1; //used to be .01
-    public static final double TURN_CONSTANT = 6;
+    public static final double TURN_CONSTANT = 24;//used to be 6  - 3/1/24
   }
 
   public static class LauncherConstants{
@@ -56,6 +56,14 @@ public final class Constants
     public static final double launcherSubwooferScore = 30;
     public static final double launcherMax = 10000;//TODO: still programmer math
     public static final double launcherTolerence = 0.1; //TODO: programmer math
+
+    //angles
+    public static final double launcherAngleSubwoofer = 50;
+    public static final double launcherAnglePodium = 15;
+    public static final double launcherAngleAmpSafetyZone = 15;
+    public static final double launcherAngleMiddlePiece = 23.5;
+    public static final double launcherAngleAmpSide = 22;
+
   }
 
   public static class IntakeConstants{

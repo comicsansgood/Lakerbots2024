@@ -7,32 +7,25 @@ import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class IntakeCollect extends Command {
+public class WaitForNoteOrButtonPress extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   
-  private final IntakeSubsystem m_intake;
-  private final FeederSubsystem m_feeder;
-
-
-  private final double tolerence = 1;
+  IntakeSubsystem intake;
+  XboxController controller;
 
 
   
-  public IntakeCollect(IntakeSubsystem intake, FeederSubsystem feeder) {
-    m_intake = intake;
-    m_feeder = feeder;
-    addRequirements(m_intake);
-    addRequirements(m_feeder);
+  public WaitForNoteOrButtonPress(IntakeSubsystem intake, XboxController controller) {
+
+    this.intake = intake;
+    this.controller = controller;
+    addRequirements(intake);
   }
 
   @Override
   public void initialize() {
-    //m_intake.intakeSpin(.4);
-    m_intake.intakeSetVelocity(2000);
-    
-    m_intake.intakeOut();
-    m_feeder.feederGo(-.6);
+
   }
 
   @Override
@@ -42,12 +35,11 @@ public class IntakeCollect extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    m_feeder.feederGo(0);
   }
 
   @Override
   public boolean isFinished() {
-    return m_intake.isNoteIntaked();
+    return intake.isNoteIntaked() || controller.getLeftBumper();
 
   }
 }

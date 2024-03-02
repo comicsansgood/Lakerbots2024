@@ -33,6 +33,6 @@ public class IntakeSetVelocity extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -170,8 +170,10 @@ public class SwerveSubsystem extends SubsystemBase
 
     if (setOdomToStart)
     {
-            //resetOdometry(new Pose2d(path.getPoint(0).position, new Rotation2d(0)));
-        resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
+              resetOdometry(new Pose2d(path.getPoint(0).position, new Rotation2d(0)));
+        //resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
+        //resetOdometry(new Pose2d(path.getPoint(0).position, path.getStartingDifferentialPose().getRotation()));
+
         //swerveDrive.setGyro(new Rotation3d(0,0,180));
         //resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
     }
@@ -474,7 +476,9 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   public void gyroBack(){
-    swerveDrive.setGyro(new Rotation3d(0, 0, 180));
+    //swerveDrive.setGyro(new Rotation3d(0, 0, 180));
+    //gyro.setYaw(180);
+    swerveDrive.setGyroOffset(new Rotation3d(0,0,180));
   }
 
   /**
