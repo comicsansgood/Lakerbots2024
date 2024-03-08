@@ -133,6 +133,7 @@ public class IntakeSubsystem extends SubsystemBase{
         SmartDashboard.putBoolean("isNoteIntaked", isNoteIntaked());
         SmartDashboard.putNumber("lasercan reading", getLaserMeasurment());
         SmartDashboard.putNumber("Intake Motor Temperature",getIntakeTemperature());
+        SmartDashboard.putNumber("intake wrist pos", intakeWristGetPosition());
     }
 
 }
