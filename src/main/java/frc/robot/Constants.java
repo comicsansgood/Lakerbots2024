@@ -30,7 +30,7 @@ public final class Constants
     public static final PIDFConfig TranslationPID     = new PIDFConfig(0.7, 0, 0);
     public static final PIDFConfig angleAutoPID = new PIDFConfig(0.4, 0, 0.01);
 
-    public static final double MAX_ACCELERATION = 2;
+    public static final double MAX_ACCELERATION = 4;
   }
 
   public static final class Drivebase
@@ -59,10 +59,16 @@ public final class Constants
 
     //angles
     public static final double launcherAngleSubwoofer = 50;
-    public static final double launcherAnglePodium = 15;
-    public static final double launcherAngleAmpSafetyZone = 15;
-    public static final double launcherAngleMiddlePiece = 23.5;
+    public static final double launcherAnglePodium = 14;
+    public static final double launcherAngleAmpSafetyZone = 14;
     public static final double launcherAngleAmpSide = 22;
+    public static final double launcherAngleMiddlePiece = 23.5;
+
+    public static final double launcherAngleAUTOSubwoofer = 50;
+    public static final double launcherAngleAUTOAmpSide = 22;
+    public static final double launcherAngleAUTOMiddlePiece = 23.5;
+    public static final double launcherAngleAUTOOffsetSubwoofer = 22;
+    public static final double launcherAngleAUTOCenterPieceShot = 19.5;
 
   }
 
