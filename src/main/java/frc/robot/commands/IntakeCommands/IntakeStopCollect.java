@@ -27,7 +27,7 @@ public class IntakeStopCollect extends Command {
 
   @Override
   public void initialize() {
-    m_intake.intakeSetVelocity(0);
+    m_intake.intakeSpin(0);
     m_feeder.feederStop();
     m_intake.intakeIn();
   }
