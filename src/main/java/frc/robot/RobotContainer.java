@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,8 +26,10 @@ import frc.robot.commands.FeederCommands.FeederJoystick;
 import frc.robot.commands.IntakeCommands.SmartIntake;
 import frc.robot.commands.IntakeCommands.SendItIntakeAuto;
 import frc.robot.commands.IntakeCommands.IntakeSpin;
+import frc.robot.commands.IntakeCommands.IntakeWristOut;
 import frc.robot.commands.IntakeCommands.SecondIntakeAndLaunch;
 import frc.robot.commands.LauncherCommands.LauncherAim;
+import frc.robot.commands.LauncherCommands.LauncherAimWithWarmup;
 import frc.robot.commands.LauncherCommands.LauncherStop;
 import frc.robot.commands.LauncherCommands.LaunchWithDelay;
 import frc.robot.commands.TrampulatorCommands.SmartAmpScore;
@@ -81,25 +84,25 @@ public class RobotContainer
 
     //------------------------------------Commands for Pathing-------------------------------------------
     NamedCommands.registerCommand("autoShootCenterSubwoofer", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleSubwoofer));
-    NamedCommands.registerCommand("autoShootMiddlePiece", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleMiddlePiece));
-    NamedCommands.registerCommand("AimFromMiddlePiece", new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleMiddlePiece));
-    NamedCommands.registerCommand("AimFromAmpSide", new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleAmpSide));
+    NamedCommands.registerCommand("autoShootOffsetSubwoofer", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOOffsetSubwoofer));
+    NamedCommands.registerCommand("autoShootCenterPieceShot", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOCenterPieceShot));
+    NamedCommands.registerCommand("autoShootMiddlePiece", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOMiddlePiece));
+    NamedCommands.registerCommand("AimFromMiddlePiece", new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleAUTOMiddlePiece));
+    NamedCommands.registerCommand("AimFromAmpSide", new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleAUTOAmpSide));
     NamedCommands.registerCommand("collect", new SendItIntakeAuto(m_intake, m_feeder, driverXbox));
     NamedCommands.registerCommand("2ndcollect", new SecondIntakeAndLaunch(m_intake, m_feeder, m_launcher, driverXbox));
     NamedCommands.registerCommand("spinIntake", new IntakeSpin(m_intake, 0.75));
     NamedCommands.registerCommand("TurnEverythingOn", new TurnEverythingOn(m_intake, m_feeder, m_launcher));
-        NamedCommands.registerCommand("TurnEverythingOnForever", new TurnEverythingOnForever(m_intake, m_feeder, m_launcher));
+    NamedCommands.registerCommand("TurnEverythingOnForever", new TurnEverythingOnForever(m_intake, m_feeder, m_launcher));
     NamedCommands.registerCommand("feederGo", new FeederGoForever(m_feeder, -1));
     //NamedCommands.registerCommand("autoShootCenterSubwoofer", new LaunchAtSubwoofer(m_drivetrain, m_launcher, m_feeder, m_elevator));
     //NamedCommands.registerCommand("autoShootMiddlePiece", new LaunchAtMiddlePiece(m_drivetrain, m_launcher, m_feeder, m_elevator));
 
     //-----------------------------------------Auto options for chooser------------------------------------
     m_chooser.addOption("centerPieceBLUE", m_drivetrain.getAutoNew("centerPieceBLUE"));
-    m_chooser.addOption("3pieceautoAmpSideRed", m_drivetrain.getAutoNew("3pieceautoAmpSideRed"));
+    m_chooser.addOption("3pieceautoAmpSideRED", m_drivetrain.getAutoNew("3pieceautoAmpSideRED"));
     m_chooser.addOption("3pieceautoAmpSideBLUE", m_drivetrain.getAutoNew("3pieceautoAmpSideBLUE"));
-    m_chooser.addOption("2 piece", m_drivetrain.getAutonomousCommand("2 piece", true));
-    m_chooser.addOption("onemmmmm",m_drivetrain.getAutonomousCommand( "1 Meter towards center Red", true));
-    m_chooser.addOption("2pieceauto", m_drivetrain.getAutoNew("2pieceauto"));
+    m_chooser.addOption("2pieceautoRED", m_drivetrain.getAutoNew("2pieceautoRED"));
     m_chooser.addOption("2pieceautoBLUE", m_drivetrain.getAutoNew("2pieceautoBLUE"));
     m_chooser.addOption("shootDaPiece", new LauncherAim(m_launcher, 47.5).andThen(new LaunchWithDelay(m_drivetrain, m_launcher, m_feeder, m_elevator)));
     SmartDashboard.putData("autochooser", m_chooser);
@@ -200,54 +203,11 @@ public class RobotContainer
 
 
     
-    //new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSpin(m_intake, 0.8));
-    //new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSpin(m_intake, 0));
-    /*new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new IntakeSetVelocity(m_intake, 3000));
-    new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new IntakeSetVelocity(m_intake, 0));
-    new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new IntakeWristIn(m_intake));
-    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new IntakeWristOut(m_intake));
-    */
+    
     new JoystickButton(driverXbox, XboxController. Button.kLeftBumper.value).onTrue(new SmartIntake(m_intake,m_feeder, driverXbox));
-    //new JoystickButton(driverXbox, XboxController. Button.kLeftBumper.value).onTrue(new IntakeCollect(m_intake,m_feeder));
-    //new JoystickButton(driverXbox, XboxController. Button.kRightBumper.value).onTrue(new IntakeStopCollect(m_intake,m_feeder));
-    //new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new LauncherAim(m_launcher, 47.5));
-   // new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new LauncherAim(m_launcher, 0));
-   new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new LaunchWithDelay(m_drivetrain,m_launcher,m_feeder, m_elevator));
-   new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new LauncherStop(m_launcher));
-    //new JoystickButton(driverXbox, XboxController.Button.kStart.value).onTrue(new ClimberGoToPosition(m_climber, -72)); 
-   //new JoystickButton(driverXbox, XboxController.Button.kX.value).onTrue(new ClimberGoToPosition(m_climber, -100));
-    //new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new ClimberGoToPosition(m_climber, 0));
-    //new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new ClimberGoToPosition(m_climber, 10));
-   
-   // new JoystickButton(driverXbox, XboxController.Button.kA.value).onTrue(new ElevatorGoToPosition(m_elevator, -100));
-    //new JoystickButton(driverXbox, XboxController.Button.kB.value).onTrue(new ElevatorGoToPosition(m_elevator, -50));
-    //new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new ElevatorGoToPosition(m_elevator, 0));
-
-
-
-
-
-
-    //new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new ElevatorGoToPosition(m_elevator, -20));
-    //new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new ElevatorGoToPosition(m_elevator, -120));
-
-    //new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new TrampulatorWristGoToPosition(m_trampulator,40));
-    //new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new IntakeWristSpin(m_intake, -0.3));
-   // new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new FeederGo(m_feeder, 0));
-    //new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new FeederGo(m_feeder, -0.2));
-
-
-    //current testing 3/2
-    /* 
-    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new TrampulatorWristGoToPosition(m_trampulator, 36));
-    new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new ClimberGoToPosition(m_climber, 0));
-    new JoystickButton(operatorXbox, XboxController.Button.kStart.value).onTrue(new ClimberGoToPosition(m_climber, -100));
-    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new SmartTrapScore(m_trampulator, m_elevator, m_feeder, m_launcher, m_climber));
-    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new SmartAmpScore(m_trampulator, m_elevator, m_feeder, m_launcher));
-    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new TrampulatorHome(m_trampulator, m_elevator, m_launcher));
-    new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new TrampulatorSpit(m_trampulator));
-    new JoystickButton(operatorXbox, XboxController.Button.kBack.value).onTrue(new ElevatorGoToPosition(m_elevator, -135).alongWith(new TrampulatorWristGoToPosition(m_trampulator, 36.5)));
-*/
+    //new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new LaunchWithDelay(m_drivetrain,m_launcher,m_feeder, m_elevator));
+    new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new FeederGo(m_feeder, -1).andThen(new WaitCommand(1)).andThen(new LauncherStop(m_launcher)));
+    new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new LauncherStop(m_launcher));
 
     //real operator
     //left joy - feeder
@@ -259,10 +219,12 @@ public class RobotContainer
     //y - amp score
     //start - climber up
     //back - climber down
-    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleSubwoofer));
-    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAnglePodium));
-    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleAmpSafetyZone));
-    //new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new SmartAmpScore(m_trampulator, m_elevator, m_feeder, m_launcher));
+    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new LauncherStop(m_launcher));
+    new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new IntakeWristOut(m_intake));
+    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new LauncherAimWithWarmup(m_launcher, m_elevator, Constants.LauncherConstants.launcherAngleSubwoofer));
+    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new LauncherAimWithWarmup(m_launcher, m_elevator, Constants.LauncherConstants.launcherAnglePodium));
+    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new LauncherAimWithWarmup(m_launcher, m_elevator, Constants.LauncherConstants.launcherAngleAmpSafetyZone));
+    //disabled for now until we get it working new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new SmartAmpScore(m_trampulator, m_elevator, m_feeder, m_launcher));
     new JoystickButton(operatorXbox, XboxController.Button.kStart.value).onTrue(new ClimberGoToPosition(m_climber, -100));
     new JoystickButton(operatorXbox, XboxController.Button.kBack.value).onTrue(new ClimberGoToPosition(m_climber, 0));
     
