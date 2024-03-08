@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 7.1,
-      "y": 3.65
+      "x": 7.15,
+      "y": 3.6
     },
     "rotation": 0.0
   },
@@ -20,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShootCenterSubwoofer"
+            "name": "autoShootOffsetSubwoofer"
           }
         },
         {
@@ -64,7 +64,13 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShootCenterSubwoofer"
+            "name": "autoShootCenterPieceShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 100.0
           }
         }
       ]
