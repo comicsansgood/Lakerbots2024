@@ -16,7 +16,7 @@ public class SendItIntakeAuto extends SequentialCommandGroup {
       new WaitCommand(.5),
       new IntakeWristOut(m_intake).withTimeout(0.5),
       new FeederGo(m_feeder, -.6),
-      //new WaitForNoteOrButtonPress(m_intake, controller),
+      new WaitForNoteOrButtonPress(m_intake, controller),
       new FeederGo(m_feeder, 0)
     );  
   }
