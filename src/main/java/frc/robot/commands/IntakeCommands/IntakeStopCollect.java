@@ -29,7 +29,7 @@ public class IntakeStopCollect extends Command {
   public void initialize() {
     m_intake.intakeSpin(0);
     m_feeder.feederStop();
-    m_intake.intakeIn();
+    m_intake.intakeHome();//m_intake.intakeIn(); changed 3/10/24 9:08 am
   }
 
   @Override

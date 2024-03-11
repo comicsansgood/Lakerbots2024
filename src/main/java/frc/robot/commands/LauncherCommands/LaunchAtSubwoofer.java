@@ -22,7 +22,7 @@ public class LaunchAtSubwoofer extends SequentialCommandGroup {
     {
         addCommands(
             new LauncherAim(launcher, 47.5),
-            new LaunchWithDelay(drivetrain, launcher, feeder, elevator)
+            new LaunchWithDelay(drivetrain, launcher, feeder)
         );
     }
 

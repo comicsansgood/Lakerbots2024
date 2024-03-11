@@ -21,11 +21,11 @@ public class LaunchWithDelayAndStartIntake extends SequentialCommandGroup {
         SwerveSubsystem drivetrain, 
         LauncherSubsystem launcher, 
         FeederSubsystem feeder,
-        ElevatorSubsystem elevator,
+        /*ElevatorSubsystem elevator,*/
         IntakeSubsystem intake)
     {
         addCommands(
-            new ElevatorGoToPosition(elevator, -20),
+            //new ElevatorGoToPosition(elevator, -20),
             new WaitCommand(0.4),
             new LauncherGo(launcher),
             new WaitCommand(0.8),

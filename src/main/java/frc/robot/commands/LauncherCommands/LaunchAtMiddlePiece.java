@@ -22,7 +22,7 @@ public class LaunchAtMiddlePiece extends SequentialCommandGroup {
     {
         addCommands(
             new LauncherAim(launcher, Constants.LauncherConstants.launcherAngleMiddlePiece),
-            new LaunchWithDelay(drivetrain, launcher, feeder, elevator)
+            new LaunchWithDelay(drivetrain, launcher, feeder)
         );
     }
 

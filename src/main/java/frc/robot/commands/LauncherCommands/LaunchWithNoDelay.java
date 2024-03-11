@@ -18,11 +18,11 @@ public class LaunchWithNoDelay extends SequentialCommandGroup {
     public LaunchWithNoDelay(
         SwerveSubsystem drivetrain, 
         LauncherSubsystem launcher, 
-        FeederSubsystem feeder,
-        ElevatorSubsystem elevator)
+        FeederSubsystem feeder/*,
+        ElevatorSubsystem elevator*/)
     {
         addCommands(
-            new ElevatorGoToPosition(elevator, -20),
+            //new ElevatorGoToPosition(elevator, -20),
             new LauncherGo(launcher),
             new FeederGo(feeder, -1),
             new WaitCommand(1),

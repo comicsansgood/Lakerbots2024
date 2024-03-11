@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +31,7 @@ import frc.robot.commands.IntakeCommands.IntakeWristOut;
 import frc.robot.commands.IntakeCommands.SecondIntakeAndLaunch;
 import frc.robot.commands.LauncherCommands.LauncherAim;
 import frc.robot.commands.LauncherCommands.LauncherAimWithWarmup;
+import frc.robot.commands.LauncherCommands.LauncherAmpScore;
 import frc.robot.commands.LauncherCommands.LauncherStop;
 import frc.robot.commands.LauncherCommands.LaunchWithDelay;
 import frc.robot.commands.TrampulatorCommands.SmartAmpScore;
@@ -41,6 +43,7 @@ import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.Trampulat
 import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.TrampulatorWristSpin;
 import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.TrampulatorWristTriggerControl;
 import frc.robot.commands.swervedrive.GyroBack;
+import frc.robot.commands.swervedrive.ZeroGyro;
 import frc.robot.commands.swervedrive.drivebase.DriveToTarget;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.LauncherSubsystem;
@@ -64,7 +67,7 @@ public class RobotContainer
   private final LauncherSubsystem m_launcher = new LauncherSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final FeederSubsystem m_feeder = new FeederSubsystem();
-  private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
+  //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimberSubsystem m_climber = new ClimberSubsystem();
   
@@ -100,11 +103,12 @@ public class RobotContainer
 
     //-----------------------------------------Auto options for chooser------------------------------------
     m_chooser.addOption("centerPieceBLUE", m_drivetrain.getAutoNew("centerPieceBLUE"));
+    m_chooser.addOption("centerPieceRED", m_drivetrain.getAutoNew("centerPieceRED"));
     m_chooser.addOption("3pieceautoAmpSideRED", m_drivetrain.getAutoNew("3pieceautoAmpSideRED"));
     m_chooser.addOption("3pieceautoAmpSideBLUE", m_drivetrain.getAutoNew("3pieceautoAmpSideBLUE"));
     m_chooser.addOption("2pieceautoRED", m_drivetrain.getAutoNew("2pieceautoRED"));
     m_chooser.addOption("2pieceautoBLUE", m_drivetrain.getAutoNew("2pieceautoBLUE"));
-    m_chooser.addOption("shootDaPiece", new LauncherAim(m_launcher, 47.5).andThen(new LaunchWithDelay(m_drivetrain, m_launcher, m_feeder, m_elevator)));
+    m_chooser.addOption("shootDaPiece", new LauncherAim(m_launcher, 47.5).andThen(new LaunchWithDelay(m_drivetrain, m_launcher, m_feeder)));
     SmartDashboard.putData("autochooser", m_chooser);
     
   //-----------------------------------------Smart Dashboard Buttons-----------------------------------------------------
@@ -112,13 +116,14 @@ public class RobotContainer
   SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(m_drivetrain, new Pose2d(new Translation2d(1,1), new Rotation2d(0)), 0.5, 1));
   SmartDashboard.putData("180 gyro", new GyroBack(m_drivetrain));
   SmartDashboard.putData("intake reverse", new IntakeSpin(m_intake, -1));
+  SmartDashboard.putData("intake spin 100", new IntakeSpin(m_intake, 1)); 
   SmartDashboard.putData("intake stop", new IntakeSpin(m_intake, 0));
   SmartDashboard.putData("climber down", new ClimberSpin(m_climber, 0.25));
   SmartDashboard.putData("climber up", new ClimberSpin(m_climber, -0.25));
   SmartDashboard.putData("climber stop", new ClimberSpin(m_climber, 0));
-  SmartDashboard.putData("trampwrist out", new TrampulatorWristSpin(m_trampulator, 0.25));
+  /*SmartDashboard.putData("trampwrist out", new TrampulatorWristSpin(m_trampulator, 0.25));
   SmartDashboard.putData("trampwrist in ", new TrampulatorWristSpin(m_trampulator, -0.25));
-  SmartDashboard.putData("trampwrist stop", new TrampulatorWristSpin(m_trampulator, 0));
+  SmartDashboard.putData("trampwrist stop", new TrampulatorWristSpin(m_trampulator, 0));*/
  
     configureBindings();
 /* 
@@ -156,17 +161,17 @@ public class RobotContainer
                                                                       tempController::getXButtonPressed, 
                                                                       tempController::getBButtonPressed);
     
- AbsoluteDriveAdv closedAbsoluteDriveAdvtele = new AbsoluteDriveAdv(m_drivetrain,
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getRawAxis(1),
+ AbsoluteDriveAdv closedAbsoluteDriveAdvWithPOV = new AbsoluteDriveAdv(m_drivetrain,
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1),
                                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getLeftX(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                                                                                                   OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(-driverXbox.getRightX(),
+                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                                                                                                   OperatorConstants.RIGHT_X_DEADBAND), 
-                                                                      tempController::getYButtonPressed, 
-                                                                      tempController::getAButtonPressed, 
-                                                                      tempController::getXButtonPressed, 
-                                                                      tempController::getBButtonPressed);
+                                                                      () -> driverXbox.getPOV() == 0, 
+                                                                      () -> driverXbox.getPOV() == 180, 
+                                                                      () -> driverXbox.getPOV() == 270, 
+                                                                      () -> driverXbox.getPOV() == 90);
 /* 
     TeleopDrive simClosedFieldRel = new TeleopDrive(m_drivetrain,
                                                     () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -193,7 +198,7 @@ public class RobotContainer
 
 
 // -----------------------------------------Default Commands-------------------------------------------   
-    m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdv);
+    m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdvWithPOV);
     m_feeder.setDefaultCommand(new FeederJoystick(m_feeder, operatorXbox)); //feeder control on the operator controller
     //m_trampulator.setDefaultCommand(new TrampulatorManipulatorOrient(m_trampulator, operatorXbox).alongWith(new TrampulatorWristTriggerControl(m_trampulator, operatorXbox)));//manipulator controll on the operator controller
   
@@ -208,9 +213,10 @@ public class RobotContainer
     //new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new LaunchWithDelay(m_drivetrain,m_launcher,m_feeder, m_elevator));
     new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new FeederGo(m_feeder, -1).andThen(new WaitCommand(1)).andThen(new LauncherStop(m_launcher)));
     new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new LauncherStop(m_launcher));
+    new JoystickButton(driverXbox, XboxController.Button.kStart.value).onTrue(new ZeroGyro(m_drivetrain));
 
     //real operator
-    //left joy - feeder
+    //left joy - feeder`Q
     //right joy - trampulator spin
     //triggers - trampulator wrist
     //a - subwoofer angle
@@ -219,17 +225,19 @@ public class RobotContainer
     //y - amp score
     //start - climber up
     //back - climber down
-    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new LauncherStop(m_launcher));
-    new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new IntakeWristOut(m_intake));
-    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new LauncherAimWithWarmup(m_launcher, m_elevator, Constants.LauncherConstants.launcherAngleSubwoofer));
-    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new LauncherAimWithWarmup(m_launcher, m_elevator, Constants.LauncherConstants.launcherAnglePodium));
-    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new LauncherAimWithWarmup(m_launcher, m_elevator, Constants.LauncherConstants.launcherAngleAmpSafetyZone));
+    //new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new LauncherStop(m_launcher));
+    //new JoystickButton(operatorXbox, XboxController.Button.kRightBumper.value).onTrue(new IntakeWristOut(m_intake));
+    new JoystickButton(operatorXbox, XboxController.Button.kA.value).onTrue(new LauncherAimWithWarmup(m_launcher, Constants.LauncherConstants.launcherAngleSubwoofer));
+    new JoystickButton(operatorXbox, XboxController.Button.kX.value).onTrue(new LauncherAimWithWarmup(m_launcher, Constants.LauncherConstants.launcherAnglePodium));
+    new JoystickButton(operatorXbox, XboxController.Button.kB.value).onTrue(new LauncherAimWithWarmup(m_launcher, Constants.LauncherConstants.launcherAngleAmpSafetyZone));
+    new JoystickButton(operatorXbox, XboxController.Button.kLeftBumper.value).onTrue(new LauncherAim(m_launcher, 0));
+    new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new LauncherAmpScore(m_launcher, m_feeder, m_elevator));
     //disabled for now until we get it working new JoystickButton(operatorXbox, XboxController.Button.kY.value).onTrue(new SmartAmpScore(m_trampulator, m_elevator, m_feeder, m_launcher));
     new JoystickButton(operatorXbox, XboxController.Button.kStart.value).onTrue(new ClimberGoToPosition(m_climber, -100));
     new JoystickButton(operatorXbox, XboxController.Button.kBack.value).onTrue(new ClimberGoToPosition(m_climber, 0));
     
   }
-
+ 
   public Command getAutonomousCommand()
   {
     return m_chooser.getSelected();

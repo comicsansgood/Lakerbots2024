@@ -3,9 +3,9 @@
   "startingPose": {
     "position": {
       "x": 7.15,
-      "y": 3.6
+      "y": 3.75
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "sideWall-sideWooferBLUE"
+            "pathName": "sideWall-sideWooferRED"
           }
         },
         {
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "sideWoofer-speakerSideOuterCenterPieceBLUE"
+                  "pathName": "sideWoofer-speakerSideOuterCenterPieceRED"
                 }
               },
               {
@@ -58,13 +58,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "speakerSideOuterCenterPiece-SideWooferBLUE"
+            "pathName": "speakerSideOuterCenterPiece-SideWooferRED"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShootCenterPieceShot"
+            "name": "autoShootCenterSubwoofer"
           }
         },
         {

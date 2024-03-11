@@ -25,7 +25,7 @@ public class VariableLaunch extends SequentialCommandGroup {
     {
         addCommands(
             new LauncherAim(launcher, theta),
-            new LaunchWithDelayAndStartIntake(drivetrain, launcher, feeder, elevator, intake)
+            new LaunchWithDelayAndStartIntake(drivetrain, launcher, feeder, intake)
         );
     }
 

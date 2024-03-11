@@ -19,7 +19,7 @@ public class LauncherSet extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public LauncherSet(LauncherSubsystem launcher, double va1, double val2) {
+  public LauncherSet(LauncherSubsystem launcher, double val1, double val2) {
     m_launcher = launcher;
     this.val1 = val1;
     this.val2 = val2;

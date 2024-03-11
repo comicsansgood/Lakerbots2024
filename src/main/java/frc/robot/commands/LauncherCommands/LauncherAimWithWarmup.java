@@ -10,20 +10,20 @@ public class LauncherAimWithWarmup extends Command {
   
   
   private final LauncherSubsystem m_launcher;
-  private final ElevatorSubsystem m_elevator;
+  //private final ElevatorSubsystem m_elevator;
   public double theta;
 
   
-  public LauncherAimWithWarmup(LauncherSubsystem launcher, ElevatorSubsystem elevator, double theta) {
+  public LauncherAimWithWarmup(LauncherSubsystem launcher/* , ElevatorSubsystem elevator*/, double theta) {
     m_launcher = launcher;
-    m_elevator = elevator;
+    //m_elevator = elevator;
     this.theta = theta;
     addRequirements(m_launcher);
   }
 
   @Override
   public void initialize() {
-    m_elevator.elevatorSetTarget(-20);
+    //m_elevator.elevatorSetTarget(-20);
     m_launcher.launcherGo();
     m_launcher.launcherAim(theta);
   }

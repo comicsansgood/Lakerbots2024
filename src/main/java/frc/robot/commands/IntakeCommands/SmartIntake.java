@@ -12,8 +12,8 @@ public class SmartIntake extends SequentialCommandGroup {
 
   public SmartIntake(IntakeSubsystem m_intake, FeederSubsystem m_feeder, XboxController controller) {
     addCommands(
-      new IntakeSpin(m_intake, 0.75),
-      new WaitCommand(.5),
+      new IntakeSpin(m_intake, 1),
+      new WaitCommand(0.5),
       new IntakeWristOut(m_intake).withTimeout(1),
       new FeederGo(m_feeder, -.6),
       new WaitForNoteOrButtonPress(m_intake, controller),

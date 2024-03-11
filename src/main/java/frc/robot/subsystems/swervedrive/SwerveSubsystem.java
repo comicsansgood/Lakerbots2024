@@ -150,7 +150,8 @@ public class SwerveSubsystem extends SubsystemBase
           // This will flip the path being followed to the red side of the field.
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
           var alliance = DriverStation.getAlliance();
-          return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+          // return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;  //COMMENTED OUT BY ME 3/9/24 TO FIX ALL RED AUTOS DRIVING BACKWARDS!!!!!!!!!
+          return false;
         },
         this // Reference to this subsystem to set requirements
                                   );
