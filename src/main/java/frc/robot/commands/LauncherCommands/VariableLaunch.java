@@ -5,18 +5,15 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
-import frc.robot.commands.swervedrive.AimAtSpeaker;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class VariableLaunch extends SequentialCommandGroup {
 
     public VariableLaunch(
-        SwerveSubsystem drivetrain, 
         LauncherSubsystem launcher, 
         FeederSubsystem feeder,
         ElevatorSubsystem elevator,
@@ -25,7 +22,7 @@ public class VariableLaunch extends SequentialCommandGroup {
     {
         addCommands(
             new LauncherAim(launcher, theta),
-            new LaunchWithDelayAndStartIntake(drivetrain, launcher, feeder, intake)
+            new LaunchWithDelayAndStartIntake(launcher, feeder, intake)
         );
     }
 

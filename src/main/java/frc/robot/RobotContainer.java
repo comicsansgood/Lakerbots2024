@@ -42,13 +42,9 @@ import frc.robot.commands.TrampulatorCommands.TrampulatorManipulatorCommands.Tra
 import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.TrampulatorWristGoToPosition;
 import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.TrampulatorWristSpin;
 import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.TrampulatorWristTriggerControl;
-import frc.robot.commands.swervedrive.GyroBack;
-import frc.robot.commands.swervedrive.ZeroGyro;
-import frc.robot.commands.swervedrive.drivebase.DriveToTarget;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.TrampulatorSubsystem;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.commands.LauncherCommands.VariableLaunch;
 import java.io.File;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -62,8 +58,7 @@ public class RobotContainer
 {
 
   //Subsystem Declaration
-  private final SwerveSubsystem m_drivetrain = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "swerve/falcon"));
+
   private final LauncherSubsystem m_launcher = new LauncherSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final FeederSubsystem m_feeder = new FeederSubsystem();
@@ -86,10 +81,10 @@ public class RobotContainer
 
 
     //------------------------------------Commands for Pathing-------------------------------------------
-    NamedCommands.registerCommand("autoShootCenterSubwoofer", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleSubwoofer));
-    NamedCommands.registerCommand("autoShootOffsetSubwoofer", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOOffsetSubwoofer));
-    NamedCommands.registerCommand("autoShootCenterPieceShot", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOCenterPieceShot));
-    NamedCommands.registerCommand("autoShootMiddlePiece", new VariableLaunch(m_drivetrain, m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOMiddlePiece));
+    NamedCommands.registerCommand("autoShootCenterSubwoofer", new VariableLaunch(m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleSubwoofer));
+    NamedCommands.registerCommand("autoShootOffsetSubwoofer", new VariableLaunch(m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOOffsetSubwoofer));
+    NamedCommands.registerCommand("autoShootCenterPieceShot", new VariableLaunch(m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOCenterPieceShot));
+    NamedCommands.registerCommand("autoShootMiddlePiece", new VariableLaunch(m_launcher, m_feeder, m_elevator, m_intake, Constants.LauncherConstants.launcherAngleAUTOMiddlePiece));
     NamedCommands.registerCommand("AimFromMiddlePiece", new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleAUTOMiddlePiece));
     NamedCommands.registerCommand("AimFromAmpSide", new LauncherAim(m_launcher, Constants.LauncherConstants.launcherAngleAUTOAmpSide));
     NamedCommands.registerCommand("collect", new SendItIntakeAuto(m_intake, m_feeder, driverXbox));
@@ -102,19 +97,9 @@ public class RobotContainer
     //NamedCommands.registerCommand("autoShootMiddlePiece", new LaunchAtMiddlePiece(m_drivetrain, m_launcher, m_feeder, m_elevator));
 
     //-----------------------------------------Auto options for chooser------------------------------------
-    m_chooser.addOption("centerPieceBLUE", m_drivetrain.getAutoNew("centerPieceBLUE"));
-    m_chooser.addOption("centerPieceRED", m_drivetrain.getAutoNew("centerPieceRED"));
-    m_chooser.addOption("3pieceautoAmpSideRED", m_drivetrain.getAutoNew("3pieceautoAmpSideRED"));
-    m_chooser.addOption("3pieceautoAmpSideBLUE", m_drivetrain.getAutoNew("3pieceautoAmpSideBLUE"));
-    m_chooser.addOption("2pieceautoRED", m_drivetrain.getAutoNew("2pieceautoRED"));
-    m_chooser.addOption("2pieceautoBLUE", m_drivetrain.getAutoNew("2pieceautoBLUE"));
-    m_chooser.addOption("shootDaPiece", new LauncherAim(m_launcher, 47.5).andThen(new LaunchWithDelay(m_drivetrain, m_launcher, m_feeder)));
     SmartDashboard.putData("autochooser", m_chooser);
     
   //-----------------------------------------Smart Dashboard Buttons-----------------------------------------------------
-  SmartDashboard.putData("drive to 0,0,0", new DriveToTarget(m_drivetrain, new Pose2d(new Translation2d(0,0), new Rotation2d(0)), 0.5, 1));
-  SmartDashboard.putData("drive to 1,1,0", new DriveToTarget(m_drivetrain, new Pose2d(new Translation2d(1,1), new Rotation2d(0)), 0.5, 1));
-  SmartDashboard.putData("180 gyro", new GyroBack(m_drivetrain));
   SmartDashboard.putData("intake reverse", new IntakeSpin(m_intake, -1));
   SmartDashboard.putData("intake spin 100", new IntakeSpin(m_intake, 1)); 
   SmartDashboard.putData("intake stop", new IntakeSpin(m_intake, 0));
@@ -126,79 +111,9 @@ public class RobotContainer
   SmartDashboard.putData("trampwrist stop", new TrampulatorWristSpin(m_trampulator, 0));*/
  
     configureBindings();
-/* 
-
----------------------------------------------------Drive Modes----------------------------------------------------
-    AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(m_drivetrain,
-                                                          // Applies deadbands and inverts controls because joysticks
-                                                          // are back-right positive while robot
-                                                            // controls are front-left positive
-                                                          () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                       OperatorConstants.LEFT_Y_DEADBAND),
-                                                          () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                       OperatorConstants.LEFT_X_DEADBAND),
-                                                          () -> -driverXbox.getRightX(),
-                                                          () -> -driverXbox.getRightY());
-
-    AbsoluteFieldDrive closedFieldAbsoluteDrive = new AbsoluteFieldDrive(m_drivetrain,
-                                                                         () ->
-                                                                             MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                                    OperatorConstants.LEFT_Y_DEADBAND),
-                                                                         () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                                      OperatorConstants.LEFT_X_DEADBAND),
-                                                                         () -> driverXbox.getRawAxis(5));//2
-                                                                         */
-
-    AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(m_drivetrain,
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1),
-                                                                                                OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                                  OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
-                                                                                                  OperatorConstants.RIGHT_X_DEADBAND), 
-                                                                      tempController::getYButtonPressed, 
-                                                                      tempController::getAButtonPressed, 
-                                                                      tempController::getXButtonPressed, 
-                                                                      tempController::getBButtonPressed);
-    
- AbsoluteDriveAdv closedAbsoluteDriveAdvWithPOV = new AbsoluteDriveAdv(m_drivetrain,
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1),
-                                                                                                OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                                  OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
-                                                                                                  OperatorConstants.RIGHT_X_DEADBAND), 
-                                                                      () -> driverXbox.getPOV() == 0, 
-                                                                      () -> driverXbox.getPOV() == 180, 
-                                                                      () -> driverXbox.getPOV() == 270, 
-                                                                      () -> driverXbox.getPOV() == 90);
-/* 
-    TeleopDrive simClosedFieldRel = new TeleopDrive(m_drivetrain,
-                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
-                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                 OperatorConstants.LEFT_X_DEADBAND),
-                                                    () -> driverXbox.getRawAxis(2), () -> true);
-    TeleopDrive closedFieldRel = new TeleopDrive(
-        m_drivetrain,
-        () -> MathUtil.applyDeadband(driverController.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverController.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverController.getRawAxis(2), () -> true);
-
-    //custom
-    TeleopDrive DriveTest = new TeleopDrive(
-        m_drivetrain,
-        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRawAxis(4), () -> true);
-*/
-    //m_drivetrain.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
-
-
 
 
 // -----------------------------------------Default Commands-------------------------------------------   
-    m_drivetrain.setDefaultCommand(closedAbsoluteDriveAdvWithPOV);
     m_feeder.setDefaultCommand(new FeederJoystick(m_feeder, operatorXbox)); //feeder control on the operator controller
     //m_trampulator.setDefaultCommand(new TrampulatorManipulatorOrient(m_trampulator, operatorXbox).alongWith(new TrampulatorWristTriggerControl(m_trampulator, operatorXbox)));//manipulator controll on the operator controller
   
@@ -213,7 +128,6 @@ public class RobotContainer
     //new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new LaunchWithDelay(m_drivetrain,m_launcher,m_feeder, m_elevator));
     new JoystickButton(driverXbox, XboxController.Button.kRightBumper.value).onTrue(new FeederGo(m_feeder, -1).andThen(new WaitCommand(1)).andThen(new LauncherStop(m_launcher)));
     new JoystickButton(driverXbox, XboxController.Button.kY.value).onTrue(new LauncherStop(m_launcher));
-    new JoystickButton(driverXbox, XboxController.Button.kStart.value).onTrue(new ZeroGyro(m_drivetrain));
 
     //real operator
     //left joy - feeder`Q
@@ -243,14 +157,5 @@ public class RobotContainer
     return m_chooser.getSelected();
   }
 
-  public void setDriveMode()
-  {
-    //m_drivetrain.setDefaultCommand();
-    
-  }
 
-  public void setMotorBrake(boolean brake)
-  {
-    m_drivetrain.setMotorBrake(brake);
-  }
 }

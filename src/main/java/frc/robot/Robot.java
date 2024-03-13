@@ -13,7 +13,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 import java.io.File;
 import java.io.IOException;
-import swervelib.parser.SwerveParser;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -81,7 +80,6 @@ public class Robot extends TimedRobot
   @Override
   public void disabledInit()
   {
-    m_robotContainer.setMotorBrake(true);
     disabledTimer.reset();
     disabledTimer.start();
   }
@@ -91,7 +89,6 @@ public class Robot extends TimedRobot
   {
     if (disabledTimer.hasElapsed(Constants.Drivebase.WHEEL_LOCK_TIME))
     {
-      m_robotContainer.setMotorBrake(false);
       disabledTimer.stop();
     }
   }
@@ -102,7 +99,6 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit()
   {
-    m_robotContainer.setMotorBrake(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     //Zm_elevator.elevatorSetTarget(-20);
@@ -137,8 +133,7 @@ public class Robot extends TimedRobot
     {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.setDriveMode();
-    m_robotContainer.setMotorBrake(true);
+
     //m_elevator.elevatorSetTarget(-20);
   }
 
@@ -153,15 +148,6 @@ public class Robot extends TimedRobot
   @Override
   public void testInit()
   {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-    try
-    {
-      new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"));
-    } catch (IOException e)
-    {
-      throw new RuntimeException(e);
-    }
   }
 
   /**
