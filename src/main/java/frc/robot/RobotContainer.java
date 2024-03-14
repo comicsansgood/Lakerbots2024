@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TurnEverythingOn;
 import frc.robot.commands.TurnEverythingOnForever;
 import frc.robot.commands.ClimberCommands.ClimberGoToPosition;
@@ -45,6 +46,9 @@ import frc.robot.commands.TrampulatorCommands.TrampulatorWristCommands.Trampulat
 
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.TrampulatorSubsystem;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.commands.LauncherCommands.VariableLaunch;
 import java.io.File;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -65,6 +69,12 @@ public class RobotContainer
   //private final TrampulatorSubsystem m_trampulator = new TrampulatorSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimberSubsystem m_climber = new ClimberSubsystem();
+
+  private final Drive m_drive = new Drive(new GyroIOPigeon2(),
+            new ModuleIOTalonFX(0),
+            new ModuleIOTalonFX(1),
+            new ModuleIOTalonFX(2),
+            new ModuleIOTalonFX(3));
   
   XboxController driverXbox = new XboxController(0);
   XboxController operatorXbox = new XboxController(1);
@@ -114,6 +124,15 @@ public class RobotContainer
 
 
 // -----------------------------------------Default Commands-------------------------------------------   
+    m_drive.setDefaultCommand(
+          DriveCommands.joystickDrive(
+              m_drive,
+              () -> -driverXbox.getLeftY(),
+              () -> -driverXbox.getLeftX(),
+              () -> -driverXbox.getRightX(),
+              () -> driverXbox.getLeftTriggerAxis()));
+
+              
     m_feeder.setDefaultCommand(new FeederJoystick(m_feeder, operatorXbox)); //feeder control on the operator controller
     //m_trampulator.setDefaultCommand(new TrampulatorManipulatorOrient(m_trampulator, operatorXbox).alongWith(new TrampulatorWristTriggerControl(m_trampulator, operatorXbox)));//manipulator controll on the operator controller
   

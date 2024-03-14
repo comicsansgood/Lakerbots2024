@@ -18,11 +18,23 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants
 {
-  public static final class Drivebase
-  {
+  public static final Mode currentMode = Mode.REAL;
+  public static final boolean tuningMode = true;
 
-    // Hold time on motor brakes when disabled
-    public static final double WHEEL_LOCK_TIME = 10; // seconds
+  public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+
+    BUSTER,
+
+    /** Running a real robot with a tank drive. */
+    TANK,
+
+    /** Running a physics simulator. */
+    SIM,
+
+    /** Replaying from a log file. */
+    REPLAY
   }
 
   public static class OperatorConstants
