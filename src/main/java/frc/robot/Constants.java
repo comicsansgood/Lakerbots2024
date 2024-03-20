@@ -60,19 +60,23 @@ public final class Constants
     public static final double launcherAngleAmpSafetyZone = 14;
     public static final double launcherAngleAmpSide = 22;
     public static final double launcherAngleMiddlePiece = 23.5;
+    public static final double launcherAngleAmpScore = 35;
 
     public static final double launcherAngleAUTOSubwoofer = 50;
     public static final double launcherAngleAUTOAmpSide = 22;
-    public static final double launcherAngleAUTOMiddlePiece = 23.5;
+    //public static final double launcherAngleAUTOMiddlePiece = 24.5;
     public static final double launcherAngleAUTOOffsetSubwoofer = 22;
-    public static final double launcherAngleAUTOCenterPieceShot = 19.5;
+    public static final double launcherAngleAUTOCenterPiece = 24.5;
+    public static final double launcherAngleAUTOArbPoint = 27;
+    public static final double launcherAngleAUTOTopPiece = 22;
+    public static final double launcherAngleAUTOPodium = 14;
 
   }
 
   public static class IntakeConstants{
     public static final double intakeHome = 0;
-    public static final double intakeIn = -0.5 * 4; //TODO:programmer math
-    public static final double intakeOut = -4.8 * 4; //TODO: still programmer math
+    public static final double intakeIn = -0.5 * 4;
+    public static final double intakeOut = -19.2;
     public static final double intakeTolerence = 0.2; //TODO : programmer math
   } 
   
@@ -82,20 +86,11 @@ public final class Constants
     public static final double climberLimit = 10000; //TODO: still programmer math
     public static final double climberTolerence = 0.1;//TODO: programmer math
   }
-  public static class TrampulatorConstants{
-    public static final double trampulatorWristMin = 0;
-    public static final double trampulatorWristMax = 10000;//TODO: still programmer math
-    public static final double trampulatorWristAmp = 1000;//TODO:programmer math
-    public static final double trampulatorWristTrap = 1000;//TODO:programmer math
-
-
-    public static final double trampulatorOrientAmp = 10000;//TODO: still programmer math
-    public static final double trampulatorOrientTrap = 10000;//TODO: still programmer math
-    public static final double trampulatorOrientHome = 0;//TODO: still programmer math
-
-
-
-    public static final double trampulatorTolerance = 0.1;//TODO: still programmer math
+  public static class AmpulatorConstants{
+    public static final double ampulatorIn = -7;
+    public static final double ampulatorOut = 0;
+    public static boolean isAmpulatorOut = false;
+    
   }
 
   public static class ElevatorConstants{

@@ -272,6 +272,10 @@ public class Drive extends SubsystemBase {
   public void setPose(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
+
+  public void zeroGyro(Pose2d pose){
+    poseEstimator.resetPosition(new Rotation2d(0), getModulePositions(), pose);
+  }
   
   /**
    * Adds a vision measurement to the pose estimator.
@@ -306,6 +310,7 @@ public class Drive extends SubsystemBase {
   public void resetHeading(){
     gyroIO.reset();
   }
+  
 
 // ========================= Tank Drive =========================
 

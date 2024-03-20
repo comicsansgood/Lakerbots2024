@@ -34,6 +34,11 @@ public class DriveCommands {
 
   private DriveCommands() {}
 
+
+  public static Command zeroGyro(Drive drive, Pose2d pose){
+    return Commands.run(() -> drive.zeroGyro(pose), drive);
+  }
+
   /**
    * Field relative drive command using two joysticks (controlling linear and angular velocities).
    */
@@ -111,6 +116,9 @@ public class DriveCommands {
                 new Pose2d(new Translation2d(), linearDirection)
                     .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                     .getTranslation();
+            if(DriverStation.getAlliance().get() == Alliance.Red){
+              linearVelocity = linearVelocity.rotateBy(Rotation2d.fromRadians(Math.PI));
+            }
 
             if (DriverStation.getAlliance().get() == Alliance.Red){
               linearVelocity = linearVelocity.rotateBy(Rotation2d.fromRadians(Math.PI));

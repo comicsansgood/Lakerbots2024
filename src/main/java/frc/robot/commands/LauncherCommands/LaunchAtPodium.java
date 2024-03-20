@@ -10,14 +10,14 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
-public class LaunchAtSubwoofer extends SequentialCommandGroup {
+public class LaunchAtPodium extends SequentialCommandGroup {
 
-    public LaunchAtSubwoofer( 
+    public LaunchAtPodium( 
         LauncherSubsystem launcher
         )
     {
         addCommands(
-            new LauncherAim(launcher, 47.5),
+            new LauncherAim(launcher, Constants.LauncherConstants.launcherAngleAUTOPodium),
             new LauncherGo(launcher)
         );
     }

@@ -67,28 +67,28 @@ public class ModuleIOTalonFX implements ModuleIO {
   public ModuleIOTalonFX(int index) {
     switch (index) {
       case 0: // FL
-        driveTalon = new TalonFX(5, "canivore");
-        turnTalon = new TalonFX(6, "canivore");
-        cancoder = new CANcoder(1, "canivore");
-        absoluteEncoderOffset = new Rotation2d(-0.271520872); // MUST BE CALIBRATED
-        break;
-      case 1: // FR
-        driveTalon = new TalonFX(8, "canivore");
-        turnTalon = new TalonFX(9, "canivore");
-        cancoder = new CANcoder(2, "canivore");
-        absoluteEncoderOffset = new Rotation2d(1.920542856); // MUST BE CALIBRATED
-        break;
-      case 2: // BL
-        driveTalon = new TalonFX(9, "canivore");
-        turnTalon = new TalonFX(10, "canivore");
-        cancoder = new CANcoder(3, "canivore");
-        absoluteEncoderOffset = new Rotation2d(2.734512059); // MUST BE CALIBRATED
-        break;
-      case 3: // BR
         driveTalon = new TalonFX(11, "canivore");
         turnTalon = new TalonFX(12, "canivore");
         cancoder = new CANcoder(4, "canivore");
-        absoluteEncoderOffset = new Rotation2d(-1.84079631861); // MUST BE CALIBRATED
+        absoluteEncoderOffset = new Rotation2d(-100*2*3.14/360); // MUST BE CALIBRATED
+        break;
+      case 1: // FR
+        driveTalon = new TalonFX(9, "canivore");
+        turnTalon = new TalonFX(10, "canivore");
+        cancoder = new CANcoder(3, "canivore");
+        absoluteEncoderOffset = new Rotation2d(-110*2*3.14/360); // MUST BE CALIBRATED
+        break;
+      case 2: // BL
+        driveTalon = new TalonFX(7, "canivore");
+        turnTalon = new TalonFX(8, "canivore");
+        cancoder = new CANcoder(2, "canivore");
+        absoluteEncoderOffset = new Rotation2d(-62*2*3.14/360); // MUST BE CALIBRATED
+        break;
+      case 3: // BR
+        driveTalon = new TalonFX(5, "canivore");
+        turnTalon = new TalonFX(6, "canivore");
+        cancoder = new CANcoder(1, "canivore");
+        absoluteEncoderOffset = new Rotation2d(110*2*3.14/360); // MUST BE CALIBRATED
         break;
       default:
         throw new RuntimeException("Invalid module index");

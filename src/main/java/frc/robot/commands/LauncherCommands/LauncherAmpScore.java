@@ -3,12 +3,16 @@ package frc.robot.commands.LauncherCommands;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
+import frc.robot.Constants.AmpulatorConstants;
+import frc.robot.commands.AmpulatorCommands.AmpulatorOut;
 import frc.robot.commands.ElevatorCommands.ElevatorGoToPosition;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
 import frc.robot.commands.IntakeCommands.IntakeSpin;
 import frc.robot.commands.IntakeCommands.IntakeWristOut;
 import frc.robot.commands.LauncherCommands.LauncherGo;
+import frc.robot.subsystems.AmpulatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -16,18 +20,14 @@ import frc.robot.subsystems.LauncherSubsystem;
 
 
 public class LauncherAmpScore extends SequentialCommandGroup {
+  public boolean ampulatorState = false; //false -> in, true -> out
 
-  public LauncherAmpScore(LauncherSubsystem launcher, FeederSubsystem feeder, ElevatorSubsystem elevator) {
+  public LauncherAmpScore(LauncherSubsystem launcher, FeederSubsystem feeder, ElevatorSubsystem elevator, AmpulatorSubsystem ampulator, XboxController controller) {
     addCommands(
-      new LauncherAim(launcher, 2),
-      new ElevatorGoToPosition(elevator, -100),
-      new LauncherSet(launcher, -0.15, -0.15),
-      new FeederGo(feeder, -0.3),
-      new WaitCommand(2),
-      new LauncherStop(launcher),
-      new ElevatorGoToPosition(elevator, 0),
-      new LauncherAim(launcher, 0),
-      new FeederStop(feeder)
+      new LauncherAim(launcher, Constants.LauncherConstants.launcherAngleAmpScore),
+      new ElevatorGoToPosition(elevator, -5),
+      new AmpulatorOut(ampulator)
+
     );  
   }
 

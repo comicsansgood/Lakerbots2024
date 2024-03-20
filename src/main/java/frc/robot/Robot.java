@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.AmpulatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 import java.io.File;
@@ -36,6 +37,7 @@ public class Robot extends LoggedRobot
 
   private RobotContainer m_robotContainer;
   private ElevatorSubsystem m_elevator;
+  private AmpulatorSubsystem m_ampulator;
 
 
   private Timer disabledTimer;
@@ -75,6 +77,7 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_elevator = m_robotContainer.m_elevator;
+    m_ampulator = m_robotContainer.m_ampulator;
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
@@ -149,8 +152,9 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
   }
 
   @Override
-  public void teleopInit()
-  {
+  public void teleopInit()  {
+        //m_ampulator.ampulatorIn();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

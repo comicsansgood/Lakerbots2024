@@ -43,7 +43,6 @@ public class LauncherSubsystem extends SubsystemBase{
         launcherRightVelocityController = launcherRightMotor.getPIDController();
         launcherRightVelocityController.setP(0.1);//TODO: tune pid
 
-        tolerence = Constants.TrampulatorConstants.trampulatorTolerance;
      }
 
     public void launcherGo(){
