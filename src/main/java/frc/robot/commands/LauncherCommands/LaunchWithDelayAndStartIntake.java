@@ -31,7 +31,7 @@ public class LaunchWithDelayAndStartIntake extends SequentialCommandGroup {
             new WaitCommand(1),
             new LauncherStop(launcher),
             new FeederStop(feeder),
-            new LauncherAim(launcher, 0)
+            new LauncherAimHome(launcher)
            
         );
     }

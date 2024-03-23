@@ -5,7 +5,7 @@
       "x": 1.25,
       "y": 5.55
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "REALone_m"
+            "pathName": "subWoofer-2ndCenter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2ndCenter-subWoofer"
           }
         }
       ]

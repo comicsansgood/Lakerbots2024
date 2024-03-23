@@ -28,7 +28,7 @@ public class EndAuto extends Command {
     launcher.launcherStop();
     feeder.feederStop();
     intake.intakeStop();
-    launcher.launcherAim(0);
+    launcher.launcherAimHome();
     intake.intakeIn();
   }
 

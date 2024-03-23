@@ -18,9 +18,7 @@ public class LauncherSubsystem extends SubsystemBase{
     public SparkPIDController launcherLeftVelocityController;
     public SparkPIDController launcherRightVelocityController;
 
-
-
-    public double tolerence;
+    public double tolerence = 2;
     public double target;
 
     public LauncherSubsystem(){
@@ -43,6 +41,8 @@ public class LauncherSubsystem extends SubsystemBase{
         launcherRightVelocityController = launcherRightMotor.getPIDController();
         launcherRightVelocityController.setP(0.1);//TODO: tune pid
 
+
+ 
      }
 
     public void launcherGo(){
@@ -50,15 +50,16 @@ public class LauncherSubsystem extends SubsystemBase{
         launcherRightMotor.set(-.65);
     }
 
-
     public void launcherStop() {
         launcherLeftMotor.set(0);
         launcherRightMotor.set(0);
+        System.out.println("launcher set to false");
     }
 
     public void launcherSet(double val1, double val2){
         launcherLeftMotor.set(val1);
         launcherRightMotor.set(val2);
+        System.out.println("launcher set to true");
     }
 
 
@@ -74,6 +75,9 @@ public class LauncherSubsystem extends SubsystemBase{
             target = theta;
             launcherPivotPidController.setReference(target, ControlType.kSmartMotion);
         }
+    }
+    public void launcherAimHome(){
+        launcherPivotPidController.setReference(0, ControlType.kSmartMotion);
     }
 
     public double launcherGetPosition(){

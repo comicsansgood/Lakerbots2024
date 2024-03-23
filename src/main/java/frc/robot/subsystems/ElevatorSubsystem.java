@@ -26,11 +26,16 @@ public class ElevatorSubsystem extends SubsystemBase{
         tolerence = Constants.ElevatorConstants.elevatorTolerence;
 
         elevatorMotor.getEncoder().setPosition(0);
+
     }
 
     public void elevatorSetTarget(double target){
         reference = target;
         elevatorPidController.setReference(reference, ControlType.kSmartMotion);
+    }
+
+    public void elevatorHome(){
+         elevatorPidController.setReference(0, ControlType.kSmartMotion);
     }
 
     public double elevatorGetPosition(){

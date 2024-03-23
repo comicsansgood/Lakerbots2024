@@ -97,6 +97,37 @@
           "data": {
             "name": "shootSubwoofer"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "subWoofer-2ndCenter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeLong"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2ndCenter-subWoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootSubwoofer"
+          }
         }
       ]
     }

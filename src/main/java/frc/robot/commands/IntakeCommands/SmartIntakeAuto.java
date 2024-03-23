@@ -8,18 +8,17 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 
-public class SmartIntake extends SequentialCommandGroup {
+public class SmartIntakeAuto extends SequentialCommandGroup {
 
-  public SmartIntake(IntakeSubsystem m_intake, FeederSubsystem m_feeder, XboxController controller) {
+  public SmartIntakeAuto(IntakeSubsystem m_intake, FeederSubsystem m_feeder) {
     addCommands(
       new IntakeSpin(m_intake, 1),
       //new WaitCommand(0.5),
-      new IntakeWristOut(m_intake).withTimeout(1),
+      new IntakeWristOut(m_intake).withTimeout(0.3),
       new FeederGo(m_feeder, -.2),
-      new WaitForNoteOrButtonPress(m_intake, controller),
+      new WaitForNote(m_intake).withTimeout(1),
       //new WaitCommand(0.25),
-      new FeederGo(m_feeder, 0),
-      new IntakeStopCollect(m_intake, m_feeder)
+      new FeederGo(m_feeder, 0)
     );  
   }
 

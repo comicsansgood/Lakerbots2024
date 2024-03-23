@@ -2,25 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 6.4,
-      "y": 2.4
+      "x": 0.4,
+      "y": 4.2
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "autoShootCenterSubwoofer"
+            "pathName": "sideWoofer-arbPoint"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AimFromMiddlePiece"
+            "name": "shootArbPoint"
           }
         },
         {
@@ -28,23 +28,29 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "OLD___subwoofer-middleBLUE"
+                  "name": "intakeLong"
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "TurnEverythingOnForever"
+                  "pathName": "arbPoint-bottomCenter-arbPoint"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootArbPoint"
           }
         }
       ]
     }
   },
-  "folder": "old",
+  "folder": null,
   "choreoAuto": false
 }

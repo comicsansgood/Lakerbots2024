@@ -60,15 +60,15 @@ public final class Constants
     public static final double launcherAngleAmpSafetyZone = 14;
     public static final double launcherAngleAmpSide = 22;
     public static final double launcherAngleMiddlePiece = 23.5;
-    public static final double launcherAngleAmpScore = 35;
+    public static final double launcherAngleAmpScore = 29.5;
 
     public static final double launcherAngleAUTOSubwoofer = 50;
     public static final double launcherAngleAUTOAmpSide = 22;
     //public static final double launcherAngleAUTOMiddlePiece = 24.5;
     public static final double launcherAngleAUTOOffsetSubwoofer = 22;
-    public static final double launcherAngleAUTOCenterPiece = 24.5;
+    public static final double launcherAngleAUTOCenterPiece = 25;
     public static final double launcherAngleAUTOArbPoint = 27;
-    public static final double launcherAngleAUTOTopPiece = 22;
+    public static final double launcherAngleAUTOTopPiece = 21;
     public static final double launcherAngleAUTOPodium = 14;
 
   }
@@ -87,14 +87,15 @@ public final class Constants
     public static final double climberTolerence = 0.1;//TODO: programmer math
   }
   public static class AmpulatorConstants{
-    public static final double ampulatorIn = -7;
-    public static final double ampulatorOut = 0;
-    public static boolean isAmpulatorOut = false;
-    
+    public static final double ampulatorIn = -5;
+    public static final double ampulatorHome = 0; 
+    public static final double ampulatorOut = 2;
+
   }
 
   public static class ElevatorConstants{
-    public static final double elevatorMax = 10000;//TODO: still programmer math
+    public static final double elevatorMax = 1000;//TODO: still programmer math
+    public static final double elevatorAmpScore = -55.5;
     public static final double elevatorHome = 0; //TODO:still programmer math\
     public static final double elevatorTolerence = 0.1;//TODO: programmer math
   }

@@ -12,7 +12,7 @@ public class FeederSubsystem extends SubsystemBase{
     public FeederSubsystem(){
 
         feederMotor = new CANSparkFlex(13, MotorType.kBrushless);
-        feederMotor.setIdleMode(IdleMode.kCoast);
+        feederMotor.setIdleMode(IdleMode.kBrake);
 
     }
 

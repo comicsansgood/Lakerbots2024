@@ -7,16 +7,16 @@ import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
+// same as SmartIntakeAuto but with no timeout on the waitForNote
+public class SmartIntakeAutoLong extends SequentialCommandGroup {
 
-public class SmartIntake extends SequentialCommandGroup {
-
-  public SmartIntake(IntakeSubsystem m_intake, FeederSubsystem m_feeder, XboxController controller) {
+  public SmartIntakeAutoLong(IntakeSubsystem m_intake, FeederSubsystem m_feeder) {
     addCommands(
       new IntakeSpin(m_intake, 1),
       //new WaitCommand(0.5),
-      new IntakeWristOut(m_intake).withTimeout(1),
+      new IntakeWristOut(m_intake).withTimeout(0.3),
       new FeederGo(m_feeder, -.2),
-      new WaitForNoteOrButtonPress(m_intake, controller),
+      new WaitForNote(m_intake),
       //new WaitCommand(0.25),
       new FeederGo(m_feeder, 0),
       new IntakeStopCollect(m_intake, m_feeder)

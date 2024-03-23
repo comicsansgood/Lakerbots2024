@@ -31,6 +31,6 @@ public class AmpulatorIn extends Command {
 
   @Override
   public boolean isFinished() {
-    return ampulator.ampulatorAtTargetPosition();
+    return true;
   }
 }

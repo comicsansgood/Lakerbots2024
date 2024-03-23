@@ -23,9 +23,9 @@ public class AmpScore extends Command {
   @Override
   public void initialize() {
 
-    if(Constants.AmpulatorConstants.isAmpulatorOut){
+    if(true){
       launcher.launcherStop();
-      launcher.launcherAim(0);
+      launcher.launcherAimHome();
       elevator.elevatorSetTarget(0);
       ampulator.ampulatorIn();
     }
@@ -38,7 +38,7 @@ public class AmpScore extends Command {
 
 
     }
-    Constants.AmpulatorConstants.isAmpulatorOut = Constants.AmpulatorConstants.isAmpulatorOut ? false : true;//flip the value
+    // not uded sdg bufgffConstants.AmpulatorConstants.isAmpulatorOut = Constants.AmpulatorConstants.isAmpulatorOut ? false : true;//flip the value
 
   }
 
@@ -58,3 +58,4 @@ public class AmpScore extends Command {
       return true;
   }
 }
+
