@@ -20,8 +20,8 @@ public class ElevatorSubsystem extends SubsystemBase{
         elevatorMotor = new CANSparkFlex(16, MotorType.kBrushless);
         elevatorPidController = elevatorMotor.getPIDController();
         elevatorPidController.setFF(0.00026);
-        elevatorPidController.setSmartMotionMaxVelocity(4000, 0);
-        elevatorPidController.setSmartMotionMaxAccel(3000, 0);
+        elevatorPidController.setSmartMotionMaxVelocity(6000, 0);
+        elevatorPidController.setSmartMotionMaxAccel(6000, 0);
 
         tolerence = Constants.ElevatorConstants.elevatorTolerence;
 
@@ -43,7 +43,7 @@ public class ElevatorSubsystem extends SubsystemBase{
     }
 
     public boolean elevatorIsAtTarget(){
-        return (reference - elevatorGetPosition()) < tolerence;
+        return Math.abs(reference - elevatorGetPosition()) < tolerence;
     }
 
     

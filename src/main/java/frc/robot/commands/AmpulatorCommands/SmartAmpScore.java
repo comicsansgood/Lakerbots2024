@@ -22,7 +22,7 @@ public class SmartAmpScore extends SequentialCommandGroup {
   public SmartAmpScore(LauncherSubsystem launcher,ElevatorSubsystem m_Elevator, AmpulatorSubsystem ampulator) {
     addCommands(
   
-      new LauncherSet(launcher, -.6, -.6),
+      new LauncherSet(launcher, -.7, -.9),
       new LauncherAim(launcher, Constants.LauncherConstants.launcherAngleAmpScore),
       new WaitCommand(.2),
       new ElevatorGoToPosition(m_Elevator, -30),

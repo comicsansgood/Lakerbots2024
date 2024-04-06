@@ -35,8 +35,8 @@ public class DriveCommands {
   private DriveCommands() {}
 
 
-  public static Command zeroGyro(Drive drive, Pose2d pose){
-    return Commands.run(() -> drive.zeroGyro(pose), drive);
+  public static Command zeroGyro(Drive drive){
+    return Commands.run(() -> {drive.resetHeading();}, drive).withTimeout(0.1);
   }
 
   /**
@@ -117,10 +117,6 @@ public class DriveCommands {
                     .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                     .getTranslation();
             if(DriverStation.getAlliance().get() == Alliance.Red){
-              linearVelocity = linearVelocity.rotateBy(Rotation2d.fromRadians(Math.PI));
-            }
-
-            if (DriverStation.getAlliance().get() == Alliance.Red){
               linearVelocity = linearVelocity.rotateBy(Rotation2d.fromRadians(Math.PI));
             }
 

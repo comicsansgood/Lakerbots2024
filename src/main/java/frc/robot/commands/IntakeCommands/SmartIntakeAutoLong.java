@@ -15,7 +15,7 @@ public class SmartIntakeAutoLong extends SequentialCommandGroup {
       new IntakeSpin(m_intake, 1),
       //new WaitCommand(0.5),
       new IntakeWristOut(m_intake).withTimeout(0.3),
-      new FeederGo(m_feeder, -.2),
+      new FeederGo(m_feeder, -.35),
       new WaitForNote(m_intake),
       //new WaitCommand(0.25),
       new FeederGo(m_feeder, 0),

@@ -273,9 +273,7 @@ public class Drive extends SubsystemBase {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
 
-  public void zeroGyro(Pose2d pose){
-    poseEstimator.resetPosition(new Rotation2d(0), getModulePositions(), pose);
-  }
+ 
   
   /**
    * Adds a vision measurement to the pose estimator.

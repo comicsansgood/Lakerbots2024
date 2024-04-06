@@ -19,8 +19,11 @@ public class AutoLaunch extends SequentialCommandGroup {
         )
     {
         addCommands(
+            /* 
             new LauncherAim(launcher, theta),
+            new LauncherGo(launcher),*/
             new LauncherGo(launcher),
+            new LauncherAim(launcher, theta),
             new FeederGo(feeder, -0.6),
             new WaitCommand(.65),
             new LauncherStop(launcher),

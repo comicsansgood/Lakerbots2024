@@ -30,7 +30,6 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public LaserCan laserCan;
     public final int pieceDistanceThreshold = 100;
-
     public double tolerence;
     public double target;
 
@@ -131,6 +130,12 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
 
+    public void intakeLaunch(){
+        target = Constants.IntakeConstants.intakeLaunch;
+        intakeWristPidController.setReference(target, ControlType.kSmartMotion, 0);
+        intakeWristFollowPidController.setReference(-target, ControlType.kSmartMotion, 0);
+    }
+
     public void intakeOut(){
         target = Constants.IntakeConstants.intakeOut;
         intakeWristPidController.setReference(target, ControlType.kSmartMotion, 0);
@@ -165,7 +170,11 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public int getLaserMeasurment(){
+        try{
         return laserCan.getMeasurement().distance_mm;
+        }catch(Exception e){
+            return 0;
+        }
     }
 
     public boolean isNoteIntaked(){

@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -31,7 +33,7 @@ public class LauncherSubsystem extends SubsystemBase{
         //launcher pivot
         launcherPivotMotor = new CANSparkMax(14, MotorType.kBrushless);
             launcherPivotPidController = launcherPivotMotor.getPIDController();
-            launcherPivotPidController.setFF(0.0005);//TODO PID tuning
+            launcherPivotPidController.setFF(0.0005);
             launcherPivotPidController.setSmartMotionMaxVelocity(2000,0);
             launcherPivotPidController.setSmartMotionMaxAccel(2000, 0);
 
@@ -48,12 +50,19 @@ public class LauncherSubsystem extends SubsystemBase{
     public void launcherGo(){
         launcherLeftMotor.set(-.95);
         launcherRightMotor.set(-.65);
+        //launcherLeftMotor.set(-1);
+        //launcherRightMotor.set(-0.8);
     }
 
     public void launcherStop() {
         launcherLeftMotor.set(0);
         launcherRightMotor.set(0);
         System.out.println("launcher set to false");
+    }
+
+    public void launcherIncrement(double increment){
+        target += increment;
+        launcherPivotPidController.setReference(increment, ControlType.kSmartMotion);
     }
 
     public void launcherSet(double val1, double val2){
@@ -92,5 +101,7 @@ public class LauncherSubsystem extends SubsystemBase{
 
     @Override
     public void periodic() {
+          SmartDashboard.putNumber("launcher pivot pos", launcherGetPosition());
+
     }
 }

@@ -57,7 +57,7 @@ public final class Constants
     //angles
     public static final double launcherAngleSubwoofer = 50;
     public static final double launcherAnglePodium = 14;
-    public static final double launcherAngleAmpSafetyZone = 14;
+    public static final double launcherAngleWingIt = 32;
     public static final double launcherAngleAmpSide = 22;
     public static final double launcherAngleMiddlePiece = 23.5;
     public static final double launcherAngleAmpScore = 29.5;
@@ -67,17 +67,22 @@ public final class Constants
     //public static final double launcherAngleAUTOMiddlePiece = 24.5;
     public static final double launcherAngleAUTOOffsetSubwoofer = 22;
     public static final double launcherAngleAUTOCenterPiece = 25;
-    public static final double launcherAngleAUTOArbPoint = 27;
+    public static final double launcherAngleAUTOArbPoint = 33;
+    public static final double launcherAngleAUTOSecondArbPoint = 30;
     public static final double launcherAngleAUTOTopPiece = 21;
     public static final double launcherAngleAUTOPodium = 14;
+    public static final double launcherAngleAUTOPodiumArbPoint = 32.5;
 
-  }
+  } 
 
   public static class IntakeConstants{
     public static final double intakeHome = 0;
     public static final double intakeIn = -0.5 * 4;
     public static final double intakeOut = -19.2;
-    public static final double intakeTolerence = 0.2; //TODO : programmer math
+
+    public static final double intakeLaunch = -3;
+
+    public static final double intakeTolerence = 0.2;
   } 
   
   public static class ClimberConstants{
@@ -97,7 +102,7 @@ public final class Constants
     public static final double elevatorMax = 1000;//TODO: still programmer math
     public static final double elevatorAmpScore = -55.5;
     public static final double elevatorHome = 0; //TODO:still programmer math\
-    public static final double elevatorTolerence = 0.1;//TODO: programmer math
+    public static final double elevatorTolerence = 5;
   }
 }
 

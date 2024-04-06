@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,9 +28,9 @@ public class AmpulatorSubsystem extends SubsystemBase{
         ampulatorWristMotor = new CANSparkMax(17, MotorType.kBrushless);
         ampulatorWristPidController = ampulatorWristMotor.getPIDController();
         ampulatorWristPidController.setFF(0.000167);
-        ampulatorWristPidController.setP(0.00001);//TODO: pid tuning
-        ampulatorWristPidController.setSmartMotionMaxVelocity(1000, 0);
-        ampulatorWristPidController.setSmartMotionMaxAccel(1000, 0);
+        ampulatorWristPidController.setP(0.00001);
+        ampulatorWristPidController.setSmartMotionMaxVelocity(2000, 0);
+        ampulatorWristPidController.setSmartMotionMaxAccel(2000, 0);
     }
 
     public void ampulatorGoToPosition(double reference){
@@ -47,6 +48,11 @@ public class AmpulatorSubsystem extends SubsystemBase{
         ampulatorWristPidController.setReference(target, ControlType.kSmartMotion);
     }
 
+    public void ampulatorIncrement(double increment){
+        target += increment;
+        ampulatorWristPidController.setReference(target, ControlType.kSmartMotion);
+    }
+
     public double ampulatorGetPosition(){
         return ampulatorWristMotor.getEncoder().getPosition();
     }
@@ -55,12 +61,13 @@ public class AmpulatorSubsystem extends SubsystemBase{
         return (Math.abs(ampulatorGetPosition()-target) < tolerence);
     }
 
-    
+    public void ampulatorGo(double x){
+        ampulatorWristMotor.set(x);
+    }
 
-    
-    
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("ampulator position", ampulatorGetPosition());
     }
 }

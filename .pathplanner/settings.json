@@ -1,11 +1,13 @@
 {
-  "robotWidth": 0.6604,
-  "robotLength": 0.6604,
+  "robotWidth": 0.7239,
+  "robotLength": 0.7112,
   "holonomicMode": true,
   "pathFolders": [
-    "4 piece stuff"
+    "{4}allWing paths"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "2 pieces"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

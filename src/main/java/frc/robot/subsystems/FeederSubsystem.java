@@ -20,9 +20,15 @@ public class FeederSubsystem extends SubsystemBase{
         feederMotor.set(0);
     }
 
+
     public void feederGo(double x){
         feederMotor.set(x);
     }
+
+    public boolean getFeederState(){
+        return Math.abs(feederMotor.getEncoder().getVelocity()) >= 0.5;//returns true if going
+    }
+
     @Override
     public void periodic(){
 

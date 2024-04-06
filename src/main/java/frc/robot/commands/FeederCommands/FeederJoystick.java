@@ -24,7 +24,7 @@ public class FeederJoystick extends Command {
 
   @Override
   public void execute() {
-    m_feederSubsystem.feederGo(controller.getLeftY());
+    m_feederSubsystem.feederGo(controller.getLeftY()*0.75);
   }
 
   @Override

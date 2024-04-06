@@ -14,13 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "subWoofer-2ndCenter"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "2ndCenter-subWoofer"
+            "pathName": "debug_1m_line"
           }
         }
       ]

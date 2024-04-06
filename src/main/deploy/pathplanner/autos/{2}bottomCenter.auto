@@ -1,0 +1,56 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.4,
+      "y": 4.2
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "sideWoofer-arbPoint"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootArbPoint"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "intakeLong"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "arbPoint-bottomCenter-arbPoint"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootSecondArbPoint"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 pieces",
+  "choreoAuto": false
+}
