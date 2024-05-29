@@ -1,4 +1,4 @@
-package frc.robot.commands.LauncherCommands;
+/*package frc.robot.commands.LauncherCommands;
 
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -43,4 +43,4 @@ public class LauncherSmartShoot extends Command {
   public boolean isFinished() {
     return true;
   }
-}
+}*/

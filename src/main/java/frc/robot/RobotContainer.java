@@ -57,6 +57,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.commands.IntakeCommands.SmartIntakeAuto;
 import frc.robot.commands.IntakeCommands.SmartIntakeAutoLong;
 import frc.robot.commands.IntakeCommands.WaitForNoteOrButtonPress;
@@ -72,9 +73,10 @@ public class RobotContainer
   private final ClimberSubsystem m_climber = new ClimberSubsystem();
   private final LedsSubsystem m_leds = new LedsSubsystem();
 
+  public static final LimelightSubsystem m_limelight = new LimelightSubsystem();
 
-
-  private final Drive m_drive = new Drive(new GyroIOPigeon2(),
+//CHANGED VISABLITY and STATIC-NESS /\  \/
+  public static final Drive m_drive = new Drive(new GyroIOPigeon2(),
             new ModuleIOTalonFX(0),
             new ModuleIOTalonFX(1),
             new ModuleIOTalonFX(2),
@@ -92,7 +94,7 @@ private final LoggedDashboardChooser<Command> m_chooser;
 
   public RobotContainer()
   {
-
+    
     NamedCommands.registerCommand("spinFeederUntilNote", new SpinFeederUntilNote(m_intake, m_feeder));
     NamedCommands.registerCommand("feederCenter", new FeederCenter(m_feeder));
     NamedCommands.registerCommand("intake", new SmartIntakeAuto(m_intake, m_feeder));
@@ -138,6 +140,7 @@ private final LoggedDashboardChooser<Command> m_chooser;
   SmartDashboard.putData("Flash green", new FlashGreen(m_leds));
   SmartDashboard.putData("wait for note", new WaitForNoteOrButtonPress(m_intake, driverXbox));
   SmartDashboard.putData("center note", new FeederCenter(m_feeder));
+  SmartDashboard.putData("launch mid", new LauncherAimWithWarmupAndFeederReverse(m_launcher, m_feeder, Constants.LauncherConstants.launcherAnglePodium));
 
 
     configureBindings();

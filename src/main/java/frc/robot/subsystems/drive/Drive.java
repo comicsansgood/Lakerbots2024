@@ -20,6 +20,8 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -32,10 +34,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.util.LocalADStarAK;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -50,7 +54,7 @@ public class Drive extends SubsystemBase {
   private static final double MAX_ANGULAR_SPEED = MAX_LINEAR_SPEED / DRIVE_BASE_RADIUS;
 
   private final GyroIO gyroIO;
-  private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
+  public final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();//made public
   private final Module[] modules = new Module[4]; //  FL, FR, BL, BR
   private final SysIdRoutine sysId;
   //Optional Tank Drive
@@ -65,7 +69,7 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition(),
         new SwerveModulePosition()
       };
-  private SwerveDrivePoseEstimator poseEstimator =
+  public SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 	  
 
@@ -179,6 +183,20 @@ public class Drive extends SubsystemBase {
         }
 
         poseEstimator.update(rawGyroRotation, modulePositions);
+
+
+
+
+         
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        try{
+        poseEstimator.addVisionMeasurement(RobotContainer.m_limelight.getEstimatedPose(), RobotContainer.m_limelight.getTimeStamp());
+        poseEstimator.resetPosition(rawGyroRotation, modulePositions, RobotContainer.m_limelight.getEstimatedPose());
+        }catch(Exception e){}
+
+        
+
+
         Logger.recordOutput("Odometry/Robot", getPose());
         break; // End of Swerve logic
     

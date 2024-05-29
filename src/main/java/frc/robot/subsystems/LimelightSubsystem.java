@@ -1,47 +1,87 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.subsystems.drive.GyroIOInputsAutoLogged;
+import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.drive.Drive;
 
 public class LimelightSubsystem extends SubsystemBase{
 
 
     public NetworkTable table;
-    public NetworkTableEntry tx;
-    public NetworkTableEntry ty;
-    public NetworkTableEntry ta;
+
     public double x;
     public double y;
     public double a;
-    public double[] tablelist = new double[3];
+
+    public int[] validIds = {7, 8};
+
+
+    private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
+
+    public LimelightHelpers.PoseEstimate mt2;
+
     
 
     public LimelightSubsystem(){
 
         table = NetworkTableInstance.getDefault().getTable("limelight");
-        tx = table.getEntry("tx");
-        ty = table.getEntry("ty");
-        ta = table.getEntry("ta");
+        LimelightHelpers.SetFiducialIDFiltersOverride("limelight", validIds);
+        
         
     }
 
-    public double[] getLimelightData(){
-        tablelist[0] = x;
-        tablelist[1] = y;
-        tablelist[3] = a;
-        return tablelist;
+    public Pose2d getEstimatedPose(){
+ 
+        if(!(mt2.tagCount == 0 || (180/Math.PI)*RobotContainer.m_drive.gyroInputs.yawVelocityRadPerSec >= 720)){
+            return mt2.pose;
+        }
+        else{
+            return null;
+        }
     }
 
+    public double getTimeStamp(){
+        return mt2.timestampSeconds;
+    }
 
     @Override
     public void periodic(){
-        //read values periodically
-        x = tx.getDouble(0.0);
-        y = ty.getDouble(0.0);
-        a = ta.getDouble(0.0);
+
+        //LimelightHelpers.SetRobotOrientation("limelight", gyroInputs.yawPosition.getDegrees(),0,0,0,0,0);
+        LimelightHelpers.SetRobotOrientation("limelight", RobotContainer.m_drive.gyroInputs.yawPosition.getDegrees(), 0, 0, 0, 0, 0);
+
+
+        mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+        
+
+
+        //SmartDashboard.putString("est pose from ll", getEstimatedPose().toString());
+
+        //Drive.poseEstimator.setVisionMeasurementStdDevs
+
+
+  
+        x = table.getEntry("tx").getDouble(0);
+        y = table.getEntry("ty").getDouble(0);
+        a = table.getEntry("ta").getDouble(0);
+    
+
+        //System.out.println("x:" + x + "\n" + " y:" + y + "\n" + " a:" + a);
+
+        SmartDashboard.putNumber("limelight x", x);
+        SmartDashboard.putNumber("linelight y ", y);
+        SmartDashboard.putNumber("limelight a", a);
+
         }
 
 }
