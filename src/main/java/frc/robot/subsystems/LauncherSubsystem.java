@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,7 +14,6 @@ public class LauncherSubsystem extends SubsystemBase{
     public CANSparkFlex launcherLeftMotor;
     public CANSparkFlex launcherRightMotor;
     public CANSparkMax launcherPivotMotor;
-
     public SparkPIDController launcherPivotPidController;
     public SparkPIDController launcherLeftVelocityController;
     public SparkPIDController launcherRightVelocityController;
@@ -29,7 +27,6 @@ public class LauncherSubsystem extends SubsystemBase{
         launcherLeftMotor.setInverted(false);
         launcherRightMotor.setInverted(true);
 
-
         //launcher pivot
         launcherPivotMotor = new CANSparkMax(14, MotorType.kBrushless);
             launcherPivotPidController = launcherPivotMotor.getPIDController();
@@ -38,23 +35,16 @@ public class LauncherSubsystem extends SubsystemBase{
             launcherPivotPidController.setSmartMotionMaxAccel(2000, 0);
 
         launcherLeftVelocityController = launcherLeftMotor.getPIDController();
-        launcherLeftVelocityController.setP(1);//TODO: tune pid
+        launcherLeftVelocityController.setP(1);
 
         launcherRightVelocityController = launcherRightMotor.getPIDController();
-        launcherRightVelocityController.setP(0.1);//TODO: tune pid
-
-
- 
+        launcherRightVelocityController.setP(0.1);
      }
 
     public void launcherGo(){
         launcherLeftMotor.set(-.95);
         launcherRightMotor.set(-.65);
-        //launcherLeftMotor.set(-1);
-        //launcherRightMotor.set(-0.8);
     }
-
-    
 
     public void launcherStop() {
         launcherLeftMotor.set(0);
@@ -73,7 +63,6 @@ public class LauncherSubsystem extends SubsystemBase{
         System.out.println("launcher set to true");
     }
 
-
     public void launcherSetVelocity(double leftVelocity, double rightVelocity){
         launcherLeftVelocityController.setReference(leftVelocity, ControlType.kSmartVelocity);
         launcherRightVelocityController.setReference(rightVelocity, ControlType.kSmartVelocity);
@@ -87,6 +76,7 @@ public class LauncherSubsystem extends SubsystemBase{
             launcherPivotPidController.setReference(target, ControlType.kSmartMotion);
         }
     }
+
     public void launcherAimHome(){
         launcherPivotPidController.setReference(0, ControlType.kSmartMotion);
     }
@@ -99,14 +89,10 @@ public class LauncherSubsystem extends SubsystemBase{
         return Math.abs(target - launcherGetPosition()) < tolerence;
     }
 
-
-
     @Override
     public void periodic() {
           SmartDashboard.putNumber("launcher pivot pos", launcherGetPosition());
           SmartDashboard.putNumber("launcher left vel", launcherLeftMotor.getEncoder().getVelocity());
         SmartDashboard.putNumber("launcher right vel", launcherRightMotor.getEncoder().getVelocity());
-
-
     }
 }

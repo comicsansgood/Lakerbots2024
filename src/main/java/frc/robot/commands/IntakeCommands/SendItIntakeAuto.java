@@ -1,13 +1,10 @@
 package frc.robot.commands.IntakeCommands;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LedsSubsystem;
-
 
 public class SendItIntakeAuto extends SequentialCommandGroup {
 
@@ -21,5 +18,4 @@ public class SendItIntakeAuto extends SequentialCommandGroup {
       new FeederGo(m_feeder, 0)
     );  
   }
-
 }

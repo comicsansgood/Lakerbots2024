@@ -1,16 +1,13 @@
 package frc.robot.commands.ClimberCommands;
-
 import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ClimberSpin extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  
   private final ClimberSubsystem m_climber;
   public double speed;
 
-  
   public ClimberSpin(ClimberSubsystem climber, double speed)  {
     m_climber = climber;
     this.speed = speed;

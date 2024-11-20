@@ -1,16 +1,12 @@
 package frc.robot.commands.AmpulatorCommands;
-
 import frc.robot.subsystems.AmpulatorSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AmpulatorOut extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  
   private final AmpulatorSubsystem ampulator;
 
-  
   public AmpulatorOut(AmpulatorSubsystem ampulator) {
     this.ampulator = ampulator;
     addRequirements(ampulator);

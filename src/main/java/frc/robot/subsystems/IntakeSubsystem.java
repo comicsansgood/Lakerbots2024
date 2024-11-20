@@ -1,23 +1,17 @@
 package frc.robot.subsystems;
-
 import java.util.Dictionary;
 import java.util.Hashtable;
-
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
-
-
 import frc.robot.Constants;
-
 
 public class IntakeSubsystem extends SubsystemBase{
 
@@ -27,8 +21,8 @@ public class IntakeSubsystem extends SubsystemBase{
     public SparkPIDController intakeWristPidController;
     public SparkPIDController intakeSpinPidController;
     public SparkPIDController intakeWristFollowPidController;
-
     public LaserCan laserCan;
+
     public final int pieceDistanceThreshold = 100;
     public double tolerence;
     public double target;
@@ -37,16 +31,14 @@ public class IntakeSubsystem extends SubsystemBase{
     public Dictionary<String, Double> downPidValues = new Hashtable<>();
     public Dictionary<String, Double> upPidValues = new Hashtable<>();
 
-
-
     public IntakeSubsystem(){
 
-        downPidValues.put("p", 0.0/*0.0002500000118743628*/);
+        downPidValues.put("p", 0.0);
         downPidValues.put("ff", 0.0017241379246115685);
         downPidValues.put("maxVel", 2000.0);
         downPidValues.put("maxAcc", 1000.0);
 
-        upPidValues.put("p", 0.0/*0.001*/);
+        upPidValues.put("p", 0.0);
         upPidValues.put("ff", 0.0017241379246115685);
         upPidValues.put("maxVel", 2000.0);
         upPidValues.put("maxAcc", 1000.0);
@@ -55,16 +47,13 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeWristMotor.restoreFactoryDefaults();
         intakeSpinMotor = new CANSparkFlex(11, MotorType.kBrushless);
 
-        intakeWristFollowMotor = new CANSparkFlex(33, MotorType.kBrushless);//TODO:(IMPORTANT) replace with a good can id number
-        //intakeWristFollowMotor.follow(intakeWristFollowMotor, true);
+        intakeWristFollowMotor = new CANSparkFlex(33, MotorType.kBrushless);
         intakeWristFollowMotor.restoreFactoryDefaults();
         intakeWristMotor.setIdleMode(IdleMode.kBrake);
         intakeWristFollowMotor.setIdleMode(IdleMode.kBrake);
 
-
         intakeSpinMotor.setSmartCurrentLimit(80);
 
-        //intake Wrist Pid  
         intakeWristPidController = intakeWristMotor.getPIDController();
             //slot 0
                 intakeWristPidController.setP(downPidValues.get("p"), 0);
@@ -89,15 +78,9 @@ public class IntakeSubsystem extends SubsystemBase{
                 intakeWristFollowPidController.setSmartMotionMaxVelocity(upPidValues.get("maxVel"), 1); 
                 intakeWristFollowPidController.setSmartMotionMaxAccel(upPidValues.get("maxAcc"), 1);
         
-
-
-
         intakeSpinPidController = intakeSpinMotor.getPIDController();
             intakeSpinPidController.setP(0.0010000000474974513);
             intakeSpinPidController.setFF(0.0003100000030826777);
-        //intakeSpinMotor.setClosedLoopRampRate(0.03);
-
-        //intakeWristPidController.setSmartMotionMaxVelocity(target, 0)
 
         laserCan = new LaserCan(0);
         try {
@@ -118,8 +101,6 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeSpinMotor.set(x);
     }
 
-
-
     public void intakeStop(){
         intakeSpinMotor.set(0);
     }
@@ -128,7 +109,6 @@ public class IntakeSubsystem extends SubsystemBase{
     public void intakeSetVelocity(double reference){
         intakeSpinPidController.setReference(reference, ControlType.kVelocity);
     }
-
 
     public void intakeLaunch(){
         target = Constants.IntakeConstants.intakeLaunch;
@@ -185,8 +165,6 @@ public class IntakeSubsystem extends SubsystemBase{
         return intakeSpinMotor.getMotorTemperature();
     }
 
-
-
     @Override
     public void periodic(){
         SmartDashboard.putBoolean("isNoteIntaked", isNoteIntaked());
@@ -194,7 +172,5 @@ public class IntakeSubsystem extends SubsystemBase{
         SmartDashboard.putNumber("Intake Motor Temperature",getIntakeTemperature());
         SmartDashboard.putNumber("intake wrist pos", intakeWristGetPosition());
         SmartDashboard.putNumber("intake spin velocity", intakeSpinMotor.getEncoder().getVelocity());
-        //SmartDashboard.putBoolean("isIntakeAboveVelocityRequired", );
     }
-
 }

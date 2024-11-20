@@ -1,17 +1,13 @@
 package frc.robot.commands.IntakeCommands;
-
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class IntakeSpin extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  
   private final IntakeSubsystem m_intake;
   public double speed;
 
-  
   public IntakeSpin(IntakeSubsystem intake, double speed) {
     m_intake = intake;
     this.speed = speed;

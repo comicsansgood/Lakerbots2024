@@ -1,32 +1,21 @@
 package frc.robot.commands.LauncherCommands;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
-import frc.robot.commands.ElevatorCommands.ElevatorGoToPosition;
 import frc.robot.commands.FeederCommands.FeederGo;
 import frc.robot.commands.FeederCommands.FeederStop;
-import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 
 public class LaunchWithNoDelay extends SequentialCommandGroup {
 
-    public LaunchWithNoDelay(
-        LauncherSubsystem launcher, 
-        FeederSubsystem feeder/*,
-        ElevatorSubsystem elevator*/)
-    {
+    public LaunchWithNoDelay(LauncherSubsystem launcher, FeederSubsystem feeder){
         addCommands(
-            //new ElevatorGoToPosition(elevator, -20),
             new LauncherGo(launcher),
             new FeederGo(feeder, -1),
             new WaitCommand(1),
             new LauncherStop(launcher),
             new FeederStop(feeder),
             new LauncherAimHome(launcher)
-           
         );
     }
 

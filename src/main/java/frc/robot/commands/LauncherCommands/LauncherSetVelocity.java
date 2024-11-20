@@ -1,5 +1,4 @@
 package frc.robot.commands.LauncherCommands;
-
 import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -9,7 +8,6 @@ public class LauncherSetVelocity extends Command {
   private final LauncherSubsystem m_launcher;
   private double leftVelocity;
   private double rightVelocity;
-
 
   public LauncherSetVelocity(LauncherSubsystem launcher, double leftVelocity, double rightVelocity) {
     m_launcher = launcher;
@@ -21,18 +19,13 @@ public class LauncherSetVelocity extends Command {
   @Override
   public void initialize() {
     m_launcher.launcherSetVelocity(leftVelocity, rightVelocity);
-
   }
 
   @Override
-  public void execute() {
-
-  }
+  public void execute() {}
 
   @Override
-  public void end(boolean interrupted) {
-
-  }
+  public void end(boolean interrupted) {}
 
   @Override
   public boolean isFinished() {

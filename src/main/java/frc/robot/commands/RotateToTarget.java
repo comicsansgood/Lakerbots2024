@@ -1,6 +1,4 @@
 package frc.robot.commands;
-
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import edu.wpi.first.math.controller.PIDController;
@@ -10,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RotateToTarget extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  private final LimelightSubsystem limelight;
+  //private final LimelightSubsystem limelight;
   private final Drive drive;
 
   public double tagX;
@@ -24,7 +22,7 @@ public class RotateToTarget extends Command {
 
   
   public RotateToTarget(LimelightSubsystem limelight, Drive drive) {
-    this.limelight = limelight;
+    //this.limelight = limelight;
     this.drive = drive;
     addRequirements(drive, limelight);
 

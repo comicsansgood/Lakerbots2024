@@ -32,7 +32,7 @@ import java.util.function.DoubleSupplier;
 public class DriveCommands {
   private static final double DEADBAND = 0.2;
   private static final double JOYSTICK_GOVERNOR = 0.3; // this value must not exceed 1.0
-  private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
+  //private static final double THROTTLE_GOVERNOR = 1.0 - JOYSTICK_GOVERNOR;
 
   private DriveCommands() {}
 

@@ -1,20 +1,14 @@
 package frc.robot.subsystems;
-import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class AmpulatorSubsystem extends SubsystemBase{
     
-    
-
-
     public CANSparkMax ampulatorWristMotor;
     public SparkPIDController ampulatorWristPidController;
 
@@ -22,9 +16,7 @@ public class AmpulatorSubsystem extends SubsystemBase{
     public final double ampThreshold = 30;
     public final double tolerence = 1;
 
-
     public AmpulatorSubsystem(){ 
-
         ampulatorWristMotor = new CANSparkMax(17, MotorType.kBrushless);
         ampulatorWristPidController = ampulatorWristMotor.getPIDController();
         ampulatorWristPidController.setFF(0.000167);
@@ -64,7 +56,6 @@ public class AmpulatorSubsystem extends SubsystemBase{
     public void ampulatorGo(double x){
         ampulatorWristMotor.set(x);
     }
-
 
     @Override
     public void periodic() {

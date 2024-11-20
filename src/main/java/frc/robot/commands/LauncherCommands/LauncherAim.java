@@ -1,17 +1,13 @@
 package frc.robot.commands.LauncherCommands;
-
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class LauncherAim extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  
   private final LauncherSubsystem m_launcher;
   public double theta;
 
-  
   public LauncherAim(LauncherSubsystem launcher, double theta) {
     m_launcher = launcher;
     this.theta = theta;
@@ -24,12 +20,10 @@ public class LauncherAim extends Command {
   }
 
   @Override
-  public void execute() {
-  }
+  public void execute() {}
 
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   @Override
   public boolean isFinished() {

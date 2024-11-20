@@ -1,7 +1,6 @@
 package frc.robot.commands.FeederCommands;
 import frc.robot.subsystems.FeederSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.FeederSubsystem;
 
 public class FeederGoForever extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -10,10 +9,8 @@ public class FeederGoForever extends Command {
   private double speed;
 
   public FeederGoForever(FeederSubsystem feeder, double speed) {
-    
     m_feederSubsystem = feeder;
     this.speed = speed;
-    
     addRequirements(m_feederSubsystem);
   }
 

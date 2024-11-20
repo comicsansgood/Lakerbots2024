@@ -1,11 +1,9 @@
 package frc.robot.commands.AmpulatorCommands;
-
 import frc.robot.subsystems.AmpulatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AmpulatorIncrement extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  
   
   private final AmpulatorSubsystem ampulator;
   private double increment;
