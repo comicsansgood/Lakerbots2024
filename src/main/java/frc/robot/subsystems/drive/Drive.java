@@ -183,19 +183,14 @@ public class Drive extends SubsystemBase {
         }
 
         poseEstimator.update(rawGyroRotation, modulePositions);
-
-
-
-
-         
+/* 
         poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
         try{
         poseEstimator.addVisionMeasurement(RobotContainer.m_limelight.getEstimatedPose(), RobotContainer.m_limelight.getTimeStamp());
         poseEstimator.resetPosition(rawGyroRotation, modulePositions, RobotContainer.m_limelight.getEstimatedPose());
         }catch(Exception e){}
-
-        
-
+*/
+    
 
         Logger.recordOutput("Odometry/Robot", getPose());
         break; // End of Swerve logic

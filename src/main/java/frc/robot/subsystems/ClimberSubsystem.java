@@ -40,7 +40,7 @@ public class ClimberSubsystem extends SubsystemBase{
         tolerence = Constants.ClimberConstants.climberTolerence;
         climberMotor.getEncoder().setPosition(0);
 
-        climberNewPid = climberMotor.getPIDController(); //TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        climberNewPid = climberMotor.getPIDController(); //TODO: !!!!!!!! !!!!!!!!!!!!!!!!!!!!!!
         climberNewPid.setP(0.0001);
     }
 

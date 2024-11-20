@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.4,
+      "y": 6.940057681533803
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ampWall_sideSub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootArbPointWithWarmup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "amp2wall"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

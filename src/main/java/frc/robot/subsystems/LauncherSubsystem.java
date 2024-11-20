@@ -54,6 +54,8 @@ public class LauncherSubsystem extends SubsystemBase{
         //launcherRightMotor.set(-0.8);
     }
 
+    
+
     public void launcherStop() {
         launcherLeftMotor.set(0);
         launcherRightMotor.set(0);
@@ -102,6 +104,9 @@ public class LauncherSubsystem extends SubsystemBase{
     @Override
     public void periodic() {
           SmartDashboard.putNumber("launcher pivot pos", launcherGetPosition());
+          SmartDashboard.putNumber("launcher left vel", launcherLeftMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("launcher right vel", launcherRightMotor.getEncoder().getVelocity());
+
 
     }
 }

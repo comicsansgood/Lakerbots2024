@@ -54,6 +54,10 @@ public class LimelightSubsystem extends SubsystemBase{
         return mt2.timestampSeconds;
     }
 
+    public double getTagX(){
+        return table.getEntry("tx").getDouble(0);
+    }
+
     @Override
     public void periodic(){
 
